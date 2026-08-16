@@ -1,194 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drift Destination – Whitsundays</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#071b2d"/>
+  <title>Drift · Whitsundays</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles_home_polish.css"/>
 </head>
 <body>
-  <header class="top-nav">
-    <div class="nav-inner">
-      <div class="logo">
-        <span class="logo-mark">◉</span>
-        <span>Drift Destination</span>
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <header class="desktop-chrome" aria-label="Drift site">
+    <div class="desktop-chrome-inner">
+      <div class="desktop-brand-wrap">
+        <img src="assets/drift-logo.png" alt="" class="desktop-chrome-logo" width="36" height="36"/>
+        <span class="desktop-brand">Drift Destination</span>
       </div>
-      <nav class="nav-links">
-        <a href="#" class="active">Home</a>
-        <a href="#">Explore</a>
-        <a href="#">Favourites</a>
+      <nav class="desktop-nav-links" aria-label="Desktop">
+        <a href="#home" data-desk-nav="home">Home</a>
+        <a href="#explore" data-desk-nav="explore">Explore</a>
+        <a href="#fav" data-desk-nav="fav">Favourites</a>
       </nav>
-      <a href="#" class="partner-btn">Become a partner</a>
+      <div class="desktop-chrome-actions">
+        <a class="desk-link" href="mailto:hello@driftdestination.com.au?subject=Partner">Become a partner</a>
+        <a class="desk-cta" href="#explore" data-desk-nav="explore">Explore</a>
+      </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>Good evening, Tony</h1>
-      <p class="sub">Discover the best of the Whitsundays.</p>
-      <div class="dest-pill">
-        <span class="pin">📍</span> Whitsundays <span class="chev">▾</span>
+  <div class="app-shell">
+    <header class="top-bar">
+      <button type="button" class="icon-btn" id="btnMenu" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="logo-wrap">
+        <img src="assets/drift-logo.png" alt="Drift Destination" class="logo-img" width="160" height="auto"/>
       </div>
-    </div>
-  </section>
+      <button type="button" class="icon-btn" id="btnBell" aria-label="Notifications">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5"/><path d="M9 17a3 3 0 0 0 6 0"/></svg>
+        <span class="bell-dot" aria-hidden="true"></span>
+      </button>
+    </header>
 
-  <main class="main">
-    <div class="grid">
-      <!-- Row 1 -->
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80" alt="Today's Specials">
-        <div class="card-label">
-          <h3>Today's Specials</h3>
-          <p>Handpicked local offers</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80" alt="Happy Hour">
-        <div class="card-label">
-          <h3>Happy Hour</h3>
-          <p>Drinks, bites & good vibes</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="What's On">
-        <div class="card-label">
-          <h3>What's On</h3>
-          <p>Events, markets & live music</p>
-        </div>
-      </a>
+    <main class="main" id="viewHome">
+      <section class="greet">
+        <h1 class="greeting-title" id="greetingTitle">Good morning, Tony 👋</h1>
+        <p class="greeting-subtitle">What do you feel like doing today?</p>
+        <a href="destination-picker.html" id="destChip" class="dest-chip">
+          <span>📍</span>
+          <span id="destChipName">Whitsundays</span>
+          <span style="opacity:0.55;font-size:0.65rem;">▾</span>
+        </a>
+      </section>
 
-      <!-- Row 2 -->
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?auto=format&fit=crop&w=800&q=80" alt="Tours & Activities">
-        <div class="card-label">
-          <h3>Tours & Activities</h3>
-          <p>Island adventures await</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="Eat & Drink">
-        <div class="card-label">
-          <h3>Eat & Drink</h3>
-          <p>Local flavours, waterfront views</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Weather & Tides">
-        <div class="card-label">
-          <h3>Weather & Tides</h3>
-          <p>Plan your day with confidence</p>
-        </div>
-      </a>
+      <!-- POLISHED ORDER: high-intent first -->
+      <div class="category-grid" id="categoryGrid" role="navigation" aria-label="Categories">
 
-      <!-- Row 3 -->
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" alt="Accommodation">
-        <div class="card-label">
-          <h3>Accommodation</h3>
-          <p>Stay in unforgettable places</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Wellness">
-        <div class="card-label">
-          <h3>Wellness</h3>
-          <p>Relax, recharge & reset</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Explore">
-        <div class="card-label">
-          <h3>Explore</h3>
-          <p>Hidden gems & must-see spots</p>
-        </div>
-      </a>
-    </div>
+        <button type="button" class="category-card cat-photo cat-photo-specials" data-cat="specials">
+          <span class="cat-icon" aria-hidden="true">🏷</span>
+          <span class="cat-title">Today’s Specials</span>
+          <span class="cat-sub">Deals on right now</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-happy" data-cat="happy-hour">
+          <span class="cat-icon" aria-hidden="true">🍹</span>
+          <span class="cat-title">Happy Hour</span>
+          <span class="cat-sub">Cheap drinks near you</span>
+        </button>
 
-    <!-- Remaining tiles -->
-    <div class="grid more">
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80" alt="Shopping">
-        <div class="card-label">
-          <h3>Shopping</h3>
-          <p>Local boutiques & markets</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" alt="Real Estate">
-        <div class="card-label">
-          <h3>Real Estate</h3>
-          <p>Properties for sale & rent</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1544620341-1adc1d493b63?auto=format&fit=crop&w=800&q=80" alt="Transport">
-        <div class="card-label">
-          <h3>Transport</h3>
-          <p>Ferries, transfers & car hire</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Weddings">
-        <div class="card-label">
-          <h3>Weddings</h3>
-          <p>Venues, planners & dream days</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Community">
-        <div class="card-label">
-          <h3>Community</h3>
-          <p>News, groups & local notices</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80" alt="Medical">
-        <div class="card-label">
-          <h3>Medical</h3>
-          <p>Health services & pharmacies</p>
-        </div>
-      </a>
-      <a class="card" href="#">
-        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80" alt="Trades & Services">
-        <div class="card-label">
-          <h3>Trades & Services</h3>
-          <p>Trusted local trades</p>
-        </div>
-      </a>
-    </div>
-  </main>
+        <button type="button" class="category-card cat-photo cat-photo-whatson" data-cat="whats-on">
+          <span class="cat-icon" aria-hidden="true">📅</span>
+          <span class="cat-title">What’s On</span>
+          <span class="cat-sub">Events &amp; things to do</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-tours" data-cat="tours">
+          <span class="cat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 18h18"/><path d="M5 18 12 5l3 6 4-2-2 9"/><path d="M12 5V3"/></svg>
+          </span>
+          <span class="cat-title">Tours &amp; Activities</span>
+          <span class="cat-sub">Book the best experiences</span>
+        </button>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-left">
-        <div class="logo"><span class="logo-mark">◉</span> Drift Destination</div>
-        <p>Your local guide to the Whitsundays.</p>
-        <div class="stores">
-          <span class="store">App Store</span>
-          <span class="store">Google Play</span>
-        </div>
+        <button type="button" class="category-card cat-photo cat-photo-eat" data-cat="eat">
+          <span class="cat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+          </span>
+          <span class="cat-title">Eat &amp; Drink</span>
+          <span class="cat-sub">Great eats near you</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-weather" data-cat="weather">
+          <span class="cat-icon" aria-hidden="true">☀️</span>
+          <span class="cat-title">Weather &amp; Tides</span>
+          <span class="cat-sub">Live conditions &amp; forecasts</span>
+        </button>
+
+        <button type="button" class="category-card cat-photo cat-photo-accommodation" data-cat="accommodation">
+          <span class="cat-icon" aria-hidden="true">🛏️</span>
+          <span class="cat-title">Accommodation</span>
+          <span class="cat-sub">Resorts, stays &amp; parks</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-wellness" data-cat="wellness">
+          <span class="cat-icon" aria-hidden="true">✨</span>
+          <span class="cat-title">Wellness</span>
+          <span class="cat-sub">Massage, spa &amp; health</span>
+        </button>
+
+        <button type="button" class="category-card cat-photo cat-photo-see" data-cat="see-and-do">
+          <span class="cat-icon" aria-hidden="true">🗺</span>
+          <span class="cat-title">Explore</span>
+          <span class="cat-sub">Lookouts, trails &amp; beaches</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-shop" data-cat="shop">
+          <span class="cat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 7h12l-1 12H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+          </span>
+          <span class="cat-title">Shopping</span>
+          <span class="cat-sub">Local stores &amp; essentials</span>
+        </button>
+
+        <button type="button" class="category-card cat-photo cat-photo-transport" data-cat="transport">
+          <span class="cat-icon" aria-hidden="true">🚕</span>
+          <span class="cat-title">Transport</span>
+          <span class="cat-sub">Cabs, cars, coaches &amp; ferries</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-realestate" data-cat="realestate">
+          <span class="cat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+          </span>
+          <span class="cat-title">Real Estate</span>
+          <span class="cat-sub">Agencies &amp; agents</span>
+        </button>
+
+        <button type="button" class="category-card cat-photo cat-photo-weddings" data-cat="weddings">
+          <span class="cat-icon" aria-hidden="true">💍</span>
+          <span class="cat-title">Weddings</span>
+          <span class="cat-sub">Venues, photo &amp; bridal</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-trades" data-cat="trades">
+          <span class="cat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </span>
+          <span class="cat-title">Trades &amp; Services</span>
+          <span class="cat-sub">Locals who get it done</span>
+        </button>
+
+        <button type="button" class="category-card cat-photo cat-photo-medical" data-cat="medical">
+          <span class="cat-icon" aria-hidden="true">🏥</span>
+          <span class="cat-title">Medical &amp; Pharmacies</span>
+          <span class="cat-sub">GP, chemist, dentist &amp; more</span>
+        </button>
+        <button type="button" class="category-card cat-photo cat-photo-community" data-cat="community">
+          <span class="cat-icon" aria-hidden="true">🏘️</span>
+          <span class="cat-title">Community</span>
+          <span class="cat-sub">Clubs, schools &amp; local life</span>
+        </button>
       </div>
-      <div class="footer-cols">
-        <div>
-          <h4>Support</h4>
-          <a href="#">Contact</a>
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <a href="#">About Us</a>
-          <a href="#">Careers</a>
-          <a href="#">Partners</a>
-        </div>
-        <div>
-          <h4>Follow Us</h4>
-          <div class="social">IG · FB · TikTok</div>
-        </div>
+
+      <div class="search-bar" role="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+        <input class="search-input" id="searchInput" type="search" placeholder="Search places, events, deals…" autocomplete="off"/>
       </div>
-    </div>
-    <div class="copy">© 2026 Drift Destination. All rights reserved.</div>
-  </footer>
+    </main>
+
+    <main class="main hidden" id="viewList">
+      <button type="button" class="back-btn" id="btnBack">← Back</button>
+      <h2 class="page-title" id="listTitle">Category</h2>
+      <div class="list-cards" id="listCards"></div>
+    </main>
+
+    <main class="main hidden" id="viewExplore">
+      <h2 class="page-title">Explore</h2>
+      <p class="muted">Browse all categories</p>
+      <div class="category-grid" id="exploreGrid"></div>
+    </main>
+
+    <main class="main hidden" id="viewFav">
+      <h2 class="page-title">Favourites</h2>
+      <p class="muted" id="favEmpty">Tap the heart on a place to save it here.</p>
+      <div class="list-cards" id="favList"></div>
+    </main>
+
+    <main class="main hidden" id="viewBook">
+      <h2 class="page-title">Bookings</h2>
+      <p class="muted">Partner booking links later. Use Call or Website on each place for now.</p>
+    </main>
+
+    <main class="main hidden" id="viewProfile">
+      <h2 class="page-title">Profile</h2>
+      <p class="muted" id="profileMode">Logged in · Tony</p>
+      <button type="button" class="ghost-btn" id="btnGuestToggle">Toggle guest greeting</button>
+    </main>
+  </div>
+
+  <nav class="bottom-nav" role="navigation" aria-label="Main">
+    <button type="button" class="nav-item active" data-view="home">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/></svg>
+      <span>Home</span>
+    </button>
+    <button type="button" class="nav-item" data-view="explore">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+      <span>Explore</span>
+    </button>
+    <button type="button" class="nav-item" data-view="fav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.2 1.2 3.9 2.2.7-1 1.9-2.2 3.9-2.2C16.8 5.5 18.3 9 14.3 12.5 16.8 16.5 12 21 12 21z"/></svg>
+      <span>Favourites</span>
+    </button>
+    <button type="button" class="nav-item" data-view="book">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
+      <span>Bookings</span>
+    </button>
+    <button type="button" class="nav-item" data-view="profile">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 19c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
 </body>
 </html>
