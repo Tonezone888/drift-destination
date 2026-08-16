@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Place · Drift Destination</title>
+  <script src="photo-defaults.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff; max-width: 430px; margin: 0 auto; min-height: 100vh;
+      background: #0a1628; position: relative; -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat; z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.5) 0%, rgba(8,20,40,0.92) 55%, rgba(8,20,40,0.96) 100%);
+      z-index: 1;
+    }
+    .page { position: relative; z-index: 2; padding: 16px 16px 40px; min-height: 100vh; }
+    .top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .back, .heart-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem; text-decoration: none; cursor: pointer;
+    }
+    .heart-btn.on { color: #fb7185; }
+    .photo-hero {
+      width: 100%; height: 160px; border-radius: 16px; object-fit: cover;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 14px;
+    }
+    .name {
+      font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em;
+      margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .locality { font-size: 0.88rem; opacity: 0.7; margin-bottom: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .actions a {
+      font-size: 0.8rem; font-weight: 600; padding: 8px 14px; border-radius: 999px;
+      text-decoration: none; color: #fff;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .actions a.primary {
+      background: rgba(62, 207, 200, 0.9);
+      border-color: transparent; color: #042028;
+    }
+    .card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px; padding: 14px 16px; margin-bottom: 12px;
+    }
+    .card-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; opacity: 0.55; margin-bottom: 10px;
+    }
+    .row {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.9rem; margin-bottom: 8px; line-height: 1.35;
+    }
+    .row:last-child { margin-bottom: 0; }
+    .row-icon { opacity: 0.7; flex-shrink: 0; }
+    .row a { color: #5eead4; text-decoration: none; }
+    .special { margin-bottom: 8px; }
+    .special:last-child { margin-bottom: 0; }
+    .special-title { font-weight: 650; font-size: 0.95rem; }
+    .special-detail { font-size: 0.78rem; opacity: 0.65; margin-top: 2px; }
+    .report-btn {
+      display: block; width: 100%; text-align: center;
+      margin-top: 8px; padding: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px dashed rgba(255,255,255,0.25);
+      border-radius: 14px; color: rgba(255,255,255,0.75);
+      font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    }
+    .report-btn:hover { background: rgba(255,255,255,0.1); }
+    .report-panel { display: none; margin-top: 10px; }
+    .report-panel.open { display: block; }
+    .report-panel label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.88rem; cursor: pointer;
+    }
+    .report-panel textarea {
+      width: 100%; margin-top: 10px; min-height: 70px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.25); color: #fff; padding: 10px;
+      font: inherit; resize: vertical;
+    }
+    .report-panel .submit {
+      margin-top: 10px; width: 100%; padding: 11px;
+      border: none; border-radius: 12px;
+      background: #3ecfc8; color: #042028;
+      font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    }
+    .report-thanks {
+      display: none; text-align: center; padding: 14px;
+      font-size: 0.9rem; opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="javascript:history.back()" aria-label="Back">←</a>
+      <button type="button" class="heart-btn" id="btnHeart" aria-label="Favourite">♡</button>
+    </div>
+
+    <img class="photo-hero" id="photo" alt="" src="assets/hero-whitsundays.jpg"/>
+
+    <h1 class="name" id="name">…</h1>
+    <div class="locality" id="locality"></div>
+
+    <div class="actions" id="actions"></div>
+
+    <div class="card" id="descCard" style="display:none">
+      <div class="card-label">About</div>
+      <div id="description" style="font-size:0.9rem;line-height:1.45;opacity:0.9"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Details</div>
+      <div id="details"></div>
+    </div>
+
+    <div class="card" id="specialsCard" style="display:none">
+      <div class="card-label">Today's specials here</div>
+      <div id="specials"></div>
+    </div>
+
+    <button type="button" class="report-btn" id="btnReport">Report a problem</button>
+    <div class="card report-panel" id="reportPanel">
+      <div class="card-label">What's wrong?</div>
+      <label><input type="checkbox" name="issue" value="address"/> Address is wrong</label>
+      <label><input type="checkbox" name="issue" value="phone"/> Phone number is wrong</label>
+      <label><input type="checkbox" name="issue" value="closed"/> Place is closed / moved</label>
+      <label><input type="checkbox" name="issue" value="hours"/> Hours are wrong</label>
+      <label><input type="checkbox" name="issue" value="other"/> Something else</label>
+      <textarea id="reportNote" placeholder="Optional note…"></textarea>
+      <button type="button" class="submit" id="btnReportSend">Send report</button>
+      <div class="report-thanks" id="reportThanks">Thanks — we’ll check this.</div>
+    </div>
+  </div>
+
+  <script>
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function isBlank(v) {
+      const s = String(v || "").trim().toLowerCase();
+      return !s || s === "n/a" || s === "na" || s === "none" || s === "-" ||
+        s === "no phone" || s === "no website" || s === "null" || s === "undefined";
+    }
+    /** Show clean domain, strip tracking junk */
+    function prettyUrl(u) {
+      try {
+        const x = new URL(/^https?:\/\//i.test(u) ? u : "https://" + u);
+        let host = x.hostname.replace(/^www\./, "");
+        let path = x.pathname === "/" ? "" : x.pathname.replace(/\/$/, "");
+        if (path.length > 24) path = path.slice(0, 22) + "…";
+        return host + path;
+      } catch (e) {
+        return String(u || "").split("?")[0].replace(/^https?:\/\//i, "").replace(/^www\./, "");
+      }
+    }
+    function destDataId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+
+    const params = new URLSearchParams(location.search);
+    const place = {
+      name: params.get("name") || "",
+      locality: params.get("locality") || "",
+      address: params.get("address") || "",
+      phone: params.get("phone") || "",
+      website: params.get("website") || "",
+      hours: params.get("hours") || "",
+      rating: params.get("rating") || "",
+      lat: params.get("lat") || "",
+      lng: params.get("lng") || "",
+      category: params.get("category") || "",
+      photo: params.get("photo") || ""
+    };
+
+    if (!place.name) place.name = "Unknown place";
+
+    document.title = place.name + " · Drift Destination";
+    document.getElementById("name").textContent = place.name;
+    document.getElementById("locality").textContent =
+      [place.locality, place.category].filter(Boolean).join(" · ");
+
+    // Prefer real photo from query or JSON; else category default
+    function setPhoto(p) {
+      var src = (p && p.photo) ? p.photo : "";
+      if (!src && window.driftPhotoFor) src = window.driftPhotoFor(p || place);
+      if (!src) src = "assets/default-accommodation.jpg";
+      document.getElementById("photo").src = src;
+    }
+    setPhoto(place);
+
+    // Load full row from businesses.json for details + photo
+    fetch("data/" + destDataId() + "/businesses.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function(r) { return r.ok ? r.json() : []; })
+      .then(function(data) {
+        var rows = Array.isArray(data) ? data : (data.businesses || []);
+        var want = (place.name || "").toLowerCase();
+        var row = rows.find(function(x) {
+          var n = (x.name || x["Business Name"] || x.Name || "").toLowerCase();
+          return n && want && n === want;
+        });
+        if (!row) return;
+        if (!place.phone) place.phone = row.phone || row.Phone || "";
+        if (!place.website) place.website = row.website || row.Website || "";
+        if (!place.address) place.address = row.address || row.Address || row["Street Address"] || "";
+        if (!place.locality) place.locality = row.locality || row.Locality || "";
+        if (!place.category) place.category = row.category || row.Category || "";
+        if (!place.photo) place.photo = row.photo || row.Photo || row.image || "";
+        place.type = row.type || row.Type || place.type || "";
+        setPhoto(place);
+        document.getElementById("locality").textContent =
+          [place.locality, place.type || place.category].filter(Boolean).join(" · ");
+        // refresh details block if empty-ish
+        var det = document.getElementById("details");
+        if (det && det.textContent.indexOf("No extra details") >= 0) {
+          var rowsHtml = [];
+          if (place.address) rowsHtml.push('<div class="row"><span class="row-icon">📍</span><span>' + esc(place.address) + "</span></div>");
+          if (place.phone && !isBlank(place.phone)) rowsHtml.push('<div class="row"><span class="row-icon">📞</span><a href="tel:' + esc(String(place.phone).replace(/[\s().-]/g,"")) + '">' + esc(place.phone) + "</a></div>");
+          if (place.website && !isBlank(place.website)) {
+            var w = place.website; var wh = /^https?:\/\//i.test(w) ? w : "https://" + w;
+            rowsHtml.push('<div class="row"><span class="row-icon">🌐</span><a href="' + esc(wh) + '" target="_blank" rel="noopener">' + esc(prettyUrl(wh)) + "</a></div>");
+          }
+          if (rowsHtml.length) det.innerHTML = rowsHtml.join("");
+        }
+      }).catch(function(){});
+
+    const phone = isBlank(place.phone) ? "" : place.phone.trim();
+    const web = isBlank(place.website) ? "" : place.website.trim();
+    const webHref = web && !/^https?:\/\//i.test(web) ? "https://" + web : web;
+
+    let actions = "";
+    if (phone) {
+      actions += '<a class="primary" href="tel:' + esc(phone.replace(/[\s().-]/g, "")) + '">Call</a>';
+    }
+    if (webHref) {
+      actions += '<a href="' + esc(webHref) + '" target="_blank" rel="noopener">Website</a>';
+    }
+    let mapQ = place.name + " " + (place.locality || "");
+    if (place.lat && place.lng) mapQ = place.lat + "," + place.lng;
+    else if (place.address) mapQ = place.address + " " + (place.locality || "");
+    actions += '<a href="https://maps.google.com/?q=' + encodeURIComponent(mapQ) + '" target="_blank" rel="noopener">Map</a>';
+    document.getElementById("actions").innerHTML = actions;
+
+    const rows = [];
+    if (place.address) {
+      rows.push('<div class="row"><span class="row-icon">📍</span><span>' + esc(place.address) + "</span></div>");
+    }
+    if (phone) {
+      rows.push('<div class="row"><span class="row-icon">📞</span><a href="tel:' +
+        esc(phone.replace(/[\s().-]/g, "")) + '">' + esc(phone) + "</a></div>");
+    }
+    if (webHref) {
+      rows.push('<div class="row"><span class="row-icon">🌐</span><a href="' + esc(webHref) +
+        '" target="_blank" rel="noopener">' + esc(prettyUrl(webHref)) + "</a></div>");
+    }
+    if (place.hours) {
+      rows.push('<div class="row"><span class="row-icon">🕐</span><span>' + esc(place.hours) + "</span></div>");
+    }
+    if (!rows.length) {
+      rows.push('<div class="row"><span style="opacity:0.6">No extra details yet</span></div>');
+    }
+        document.getElementById("details").innerHTML = rows.join("");
+
+    const desc = params.get("description") || params.get("about") || "";
+    if (desc && !isBlank(desc)) {
+      document.getElementById("descCard").style.display = "block";
+      document.getElementById("description").textContent = desc;
+    }
+
+    // Match live specials for this business name
+    fetch("data/" + destDataId() + "/ops.json?t=" + Date.now())
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (ops) {
+        if (!ops || !Array.isArray(ops.specials)) return;
+        const mine = ops.specials.filter(function (s) {
+          const n = String(s.business || s.name || s.place || "").toLowerCase();
+          return n && place.name.toLowerCase().indexOf(n) !== -1 ||
+            n.indexOf(place.name.toLowerCase()) !== -1;
+        });
+        if (!mine.length) return;
+        document.getElementById("specialsCard").style.display = "block";
+        document.getElementById("specials").innerHTML = mine.map(function (s) {
+          return '<div class="special"><div class="special-title">' + esc(s.title || s.deal || "Special") +
+            '</div><div class="special-detail">' + esc(s.detail || s.time || s.when || "") +
+            "</div></div>";
+        }).join("");
+      })
+      .catch(function () {});
+
+    // Favourites
+    var FAV_KEY = "drift_favs";
+    var favs;
+    try { favs = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || "[]")); }
+    catch (e) { favs = new Set(); }
+    var heart = document.getElementById("btnHeart");
+    if (favs.has(place.name)) {
+      heart.classList.add("on");
+      heart.textContent = "♥";
+    }
+    heart.addEventListener("click", function () {
+      if (favs.has(place.name)) favs.delete(place.name);
+      else favs.add(place.name);
+      localStorage.setItem(FAV_KEY, JSON.stringify(Array.from(favs)));
+      heart.classList.toggle("on");
+      heart.textContent = favs.has(place.name) ? "♥" : "♡";
+    });
+
+    // Report a problem (stored locally for now — later → Daily Ops)
+    var btnReport = document.getElementById("btnReport");
+    var panel = document.getElementById("reportPanel");
+    btnReport.addEventListener("click", function () {
+      panel.classList.toggle("open");
+    });
+    document.getElementById("btnReportSend").addEventListener("click", function () {
+      var issues = Array.prototype.slice.call(
+        document.querySelectorAll('input[name="issue"]:checked')
+      ).map(function (el) { return el.value; });
+      var note = document.getElementById("reportNote").value.trim();
+      if (!issues.length && !note) {
+        alert("Pick an issue or add a short note.");
+        return;
+      }
+      var report = {
+        place: place.name,
+        locality: place.locality,
+        destination_id: destDataId(),
+        issues: issues,
+        note: note,
+        at: new Date().toISOString()
+      };
+      try {
+        var key = "drift_reports";
+        var all = JSON.parse(localStorage.getItem(key) || "[]");
+        all.push(report);
+        localStorage.setItem(key, JSON.stringify(all));
+      } catch (e) {}
+      document.getElementById("reportThanks").style.display = "block";
+      document.getElementById("btnReportSend").style.display = "none";
+    });
+  </script>
+</body>
+</html>

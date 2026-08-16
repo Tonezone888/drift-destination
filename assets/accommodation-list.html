@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Accommodation · Drift Destination</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="photo-defaults.js"></script>
+  <style>
+    html, body {
+      margin: 0; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif;
+      height: auto !important; min-height: 100%;
+      overflow-x: hidden !important; overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .hero-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(160deg,#041018,#0c4a6e), url("assets/hero-whitsundays.jpg") center/cover;
+    }
+    .wrap { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 12px 14px 100px; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .back { color: #5eead4; text-decoration: none; font-size: 1.3rem; }
+    .title { margin: 0; font-size: 1.2rem; font-weight: 800; flex: 1; }
+    .card {
+      position: relative;
+      display: flex; gap: 12px; align-items: stretch;
+      padding: 10px; margin: 0 0 10px;
+      border-radius: 14px; color: inherit;
+      background: rgba(8,28,44,0.62); border: 1px solid rgba(255,255,255,0.12);
+    }
+    .card-hit { position: absolute; inset: 0; z-index: 1; border-radius: 14px; }
+    .card-photo {
+      width: 88px; min-height: 88px; flex-shrink: 0;
+      border-radius: 10px; object-fit: cover;
+      background: rgba(0,0,0,0.25); position: relative; z-index: 0;
+    }
+    .card-body { flex: 1; min-width: 0; position: relative; z-index: 0; display: flex; flex-direction: column; justify-content: center; }
+    .card-name { font-weight: 700; font-size: 0.95rem; line-height: 1.25; }
+    .card-meta { font-size: 0.75rem; opacity: 0.8; margin-top: 3px; }
+    .card-actions {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+      position: relative; z-index: 2;
+    }
+    .btn {
+      display: inline-block; padding: 7px 12px; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 600; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0;
+      background: rgba(255,255,255,0.08);
+    }
+    .btn-call {
+      background: #2dd4bf; color: #042f2e; border-color: transparent; font-weight: 700;
+    }
+    .empty { opacity: 0.75; text-align: center; padding: 40px 12px; }
+    .add-listing {
+      display: block; max-width: 240px; margin: 28px auto 16px; padding: 9px 16px;
+      border-radius: 11px; text-decoration: none; text-align: center;
+      background: rgba(8, 47, 73, 0.55); border: 1.5px solid rgba(94, 234, 212, 0.75);
+    }
+    .add-listing span { color: #5eead4; font-weight: 700; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="accommodation.html">←</a>
+      <h1 class="title" id="title">Accommodation</h1>
+    </div>
+    <div id="list"><p class="empty">Loading…</p></div>
+    <a class="add-listing" href="signup.html"><span>Add your business +</span></a>
+  </div>
+  <script>
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function esc(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+    }
+    function isReal(v) {
+      const s = String(v || "").trim();
+      return s && s.toLowerCase() !== "n/a" && s !== "-" && s !== "none";
+    }
+    const params = new URLSearchParams(location.search);
+    const typeFilter = (params.get("type") || "").trim();
+    if (typeFilter) document.getElementById("title").textContent = typeFilter;
+
+    function isAccom(row) {
+      const cat = String(row.Category || row.category || "").toLowerCase();
+      const sheet = String(row._sheet || row.sheet || "").toLowerCase();
+      const type = String(row.Type || row.type || "").toLowerCase();
+      if (cat.includes("accommodation")) return true;
+      if (sheet.includes("accommodation")) return true;
+      const acTypes = ["resort", "hotel", "motel", "apartment", "holiday unit", "backpackers", "hostel", "caravan", "cabin park"];
+      return acTypes.some(t => type.includes(t));
+    }
+    function matchesType(row, want) {
+      if (!want) return true;
+      const type = String(row.Type || row.type || "").toLowerCase();
+      const w = want.toLowerCase();
+      if (w.includes("resort")) return type.includes("resort") && !type.includes("apartment");
+      if (w.includes("hotel") || w.includes("motel")) return type.includes("hotel") || type.includes("motel");
+      if (w.includes("apartment") || w.includes("holiday")) return type.includes("apartment") || type.includes("holiday");
+      if (w.includes("backpack") || w.includes("hostel")) return type.includes("backpack") || type.includes("hostel");
+      if (w.includes("caravan") || w.includes("cabin")) return type.includes("caravan") || type.includes("cabin");
+      return type.includes(w.split("/")[0].trim());
+    }
+
+    fetch("data/" + destId() + "/businesses.json?t=" + Date.now(), { cache: "no-store" })
+      .then(r => r.ok ? r.json() : [])
+      .then(data => {
+        let rows = Array.isArray(data) ? data : (data.businesses || []);
+        if (!Array.isArray(rows)) rows = [];
+        rows = rows.filter(isAccom).filter(r => matchesType(r, typeFilter));
+        const el = document.getElementById("list");
+        if (!rows.length) {
+          el.innerHTML = '<p class="empty">No stays in this filter yet.</p>';
+          return;
+        }
+        rows.sort((a, b) => String(a["Business Name"] || a.name || a.Name || "")
+          .localeCompare(String(b["Business Name"] || b.name || b.Name || "")));
+        el.innerHTML = rows.map(r => {
+          const name = r["Business Name"] || r.name || r.Name || "Stay";
+          const type = r.Type || r.type || "";
+          const loc = r.Locality || r.locality || "";
+          const phone = isReal(r.Phone || r.phone) ? String(r.Phone || r.phone).trim() : "";
+          const web = isReal(r.Website || r.website) ? String(r.Website || r.website).trim() : "";
+          const webHref = web && !/^https?:\/\//i.test(web) ? "https://" + web : web;
+          const id = r.id || r.DriftID || r["Drift ID"] || name;
+          const photo = window.driftPhotoFor(r);
+          const placeUrl = "place.html?id=" + encodeURIComponent(id) +
+            "&name=" + encodeURIComponent(name) +
+            "&locality=" + encodeURIComponent(loc) +
+            "&phone=" + encodeURIComponent(phone) +
+            "&website=" + encodeURIComponent(web) +
+            "&category=" + encodeURIComponent(r.category || r.Category || type || "Accommodation") +
+            "&type=" + encodeURIComponent(type) +
+            "&photo=" + encodeURIComponent(photo) +
+            "&address=" + encodeURIComponent(r.address || r.Address || r["Street Address"] || "");
+          let actions = "";
+          if (phone) {
+            const tel = phone.replace(/[\s().-]/g, "");
+            actions += '<a class="btn btn-call" href="tel:' + tel + '">Call</a>';
+          }
+          if (webHref) {
+            actions += '<a class="btn" href="' + esc(webHref) + '" target="_blank" rel="noopener">Website</a>';
+          }
+          return (
+            '<div class="card">' +
+              '<a class="card-hit" href="' + placeUrl + '" aria-label="' + esc(name) + '"></a>' +
+              '<img class="card-photo" src="' + esc(photo) + '" alt="" loading="lazy"/>' +
+              '<div class="card-body">' +
+                '<div class="card-name">' + esc(name) + '</div>' +
+                '<div class="card-meta">' + esc(type) + (loc ? " · " + esc(loc) : "") + '</div>' +
+                (actions ? '<div class="card-actions">' + actions + '</div>' : '') +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
+      })
+      .catch(() => {
+        document.getElementById("list").innerHTML = '<p class="empty">Could not load listings.</p>';
+      });
+  </script>
+</body>
+</html>
