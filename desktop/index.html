@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drift Destination · Whitsundays</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles_home_polish.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a1f33;
+      color: #fff;
+    }
+    .desktop-chrome {
+      background: #071b2d;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .desktop-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .desktop-brand img {
+      height: 36px;
+    }
+    .desktop-nav {
+      display: flex;
+      gap: 28px;
+    }
+    .desktop-nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .desktop-nav a:hover {
+      color: #fff;
+    }
+    .desktop-actions a {
+      background: #1e90ff;
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .hero {
+      height: 420px;
+      background: url('../assets/hero-whitsundays.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(7,27,45,0.35), rgba(7,27,45,0.7));
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    .location-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 15px;
+    }
+    .tiles-section {
+      max-width: 1100px;
+      margin: -60px auto 60px;
+      padding: 0 30px;
+      position: relative;
+      z-index: 3;
+    }
+    .tiles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .tile {
+      height: 180px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .tile:hover {
+      transform: translateY(-4px);
+    }
+    .tile-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), transparent 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+    .tile h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .tile p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="desktop-chrome">
+    <div class="desktop-brand">
+      <img src="../assets/drift-logo.png" alt="Drift">
+      <span>Drift Destination</span>
+    </div>
+    <nav class="desktop-nav">
+      <a href="#">Home</a>
+      <a href="#">Explore</a>
+      <a href="#">Favourites</a>
+    </nav>
+    <div class="desktop-actions">
+      <a href="mailto:hello@driftdestination.com.au?subject=Partner">Become a partner</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Good evening, Tony</h1>
+      <p>Discover the best of the Whitsundays</p>
+      <div class="location-pill">
+        📍 Whitsundays ▾
+      </div>
+    </div>
+  </section>
+
+  <section class="tiles-section">
+    <div class="tiles-grid">
+      <div class="tile" style="background-image:url('../assets/tile-specials.jpg')">
+        <div class="tile-overlay">
+          <h3>Today's Specials</h3>
+          <p>Deals on right now</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-happyhour.jpg')">
+        <div class="tile-overlay">
+          <h3>Happy Hour</h3>
+          <p>Cheap drinks near you</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-whatson.jpg')">
+        <div class="tile-overlay">
+          <h3>What's On</h3>
+          <p>Events & things to do</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-tours.jpg')">
+        <div class="tile-overlay">
+          <h3>Tours & Activities</h3>
+          <p>Book the best experiences</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-eat.jpg')">
+        <div class="tile-overlay">
+          <h3>Eat & Drink</h3>
+          <p>Great eats near you</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-weather.jpg')">
+        <div class="tile-overlay">
+          <h3>Weather & Tides</h3>
+          <p>Live conditions & forecasts</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-accommodation.jpg')">
+        <div class="tile-overlay">
+          <h3>Accommodation</h3>
+          <p>Resorts, stays & parks</p>
+        </div>
+      </div>
+      <div class="tile" style="background-image:url('../assets/tile-wellness.jpg')">
+        <div class="tile-overlay">
+          <h3>Wellness</h3>
+          <p>Massage, spa & health</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
