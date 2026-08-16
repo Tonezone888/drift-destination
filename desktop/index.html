@@ -1,200 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Drift Destination · Whitsundays</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0b1c2d;
-      color: #fff;
-      min-height: 100vh;
-    }
-    header {
-      background: #071525;
-      padding: 16px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 20px;
-      font-weight: 600;
-    }
-    .brand img { height: 34px; }
-    nav { display: flex; gap: 32px; }
-    nav a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-    }
-    nav a:hover { color: #fff; }
-    .partner {
-      background: #1e90ff;
-      color: #fff;
-      padding: 9px 20px;
-      border-radius: 22px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .hero {
-      height: 380px;
-      background: linear-gradient(rgba(7,21,37,0.45), rgba(7,21,37,0.7)), url('../assets/hero-whitsundays.jpg') center/cover;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    .hero h1 { font-size: 46px; font-weight: 700; margin-bottom: 8px; }
-    .hero p { font-size: 18px; opacity: 0.9; margin-bottom: 22px; }
-    .location {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 15px;
-    }
-    .content {
-      max-width: 1200px;
-      margin: -50px auto 80px;
-      padding: 0 40px;
-      position: relative;
-      z-index: 10;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-    .tile {
-      height: 170px;
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      background: #13293d;
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .tile:hover { transform: translateY(-5px); }
-    .tile-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 16px;
-    }
-    .tile h3 { font-size: 17px; font-weight: 600; margin: 0; }
-    .tile p { font-size: 13px; opacity: 0.85; margin-top: 3px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drift Destination – Whitsundays</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Top Nav -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-icon">◉</span>
+        <span class="logo-text">Drift Destination</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="#">Explore</a>
+        <a href="#">Favourites</a>
+      </nav>
+      <a href="#" class="partner-btn">Become a partner</a>
+    </div>
+  </header>
 
-<header>
-  <div class="brand">
-    <img src="../assets/drift-logo.png" alt="Drift">
-    Drift Destination
-  </div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Explore</a>
-    <a href="#">Favourites</a>
-  </nav>
-  <a class="partner" href="mailto:hello@driftdestination.com.au">Become a partner</a>
-</header>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Good evening, Tony</h1>
+      <p class="hero-sub">Discover the best of the Whitsundays.</p>
+      <div class="destination-pill">
+        <span class="pin">📍</span> Whitsundays <span class="arrow">▾</span>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search experiences, places or services..." />
+        <button>Search</button>
+      </div>
+    </div>
+  </section>
 
-<section class="hero">
-  <h1>Good evening, Tony</h1>
-  <p>Discover the best of the Whitsundays</p>
-  <div class="location">📍 Whitsundays ▾</div>
-</section>
-
-<div class="content">
-  <div class="grid">
-
-    <div class="tile" style="background-image:url('../assets/tile-specials.jpg')">
-      <div class="tile-overlay"><h3>Today's Specials</h3><p>Deals on right now</p></div>
+  <!-- Main Tiles (first 9 – above the fold) -->
+  <main class="tiles-section">
+    <div class="tiles-grid">
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Today's Specials" />
+        <div class="tile-text">
+          <h3>Today's Specials</h3>
+          <p>Handpicked local offers</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80" alt="Happy Hour" />
+        <div class="tile-text">
+          <h3>Happy Hour</h3>
+          <p>Drinks, bites & good vibes</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80" alt="What's On" />
+        <div class="tile-text">
+          <h3>What's On</h3>
+          <p>Events, markets & live music</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=600&q=80" alt="Tours & Activities" />
+        <div class="tile-text">
+          <h3>Tours & Activities</h3>
+          <p>Island adventures await</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Eat & Drink" />
+        <div class="tile-text">
+          <h3>Eat & Drink</h3>
+          <p>Local flavours, waterfront views</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Weather & Tides" />
+        <div class="tile-text">
+          <h3>Weather & Tides</h3>
+          <p>Plan your day with confidence</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80" alt="Accommodation" />
+        <div class="tile-text">
+          <h3>Accommodation</h3>
+          <p>Stay in unforgettable places</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Wellness" />
+        <div class="tile-text">
+          <h3>Wellness</h3>
+          <p>Relax, recharge & reset</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Explore" />
+        <div class="tile-text">
+          <h3>Explore</h3>
+          <p>Hidden gems & must-see spots</p>
+        </div>
+      </a>
     </div>
 
-    <div class="tile" style="background-image:url('../assets/tile-happyhour.jpg')">
-      <div class="tile-overlay"><h3>Happy Hour</h3><p>Cheap drinks near you</p></div>
+    <!-- Remaining tiles (appear on scroll) -->
+    <div class="tiles-grid more-tiles">
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="Shopping" />
+        <div class="tile-text">
+          <h3>Shopping</h3>
+          <p>Local boutiques & markets</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80" alt="Real Estate" />
+        <div class="tile-text">
+          <h3>Real Estate</h3>
+          <p>Properties for sale & rent</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1544620341-1adc1d493b63?w=600&q=80" alt="Transport" />
+        <div class="tile-text">
+          <h3>Transport</h3>
+          <p>Ferries, transfers & car hire</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Weddings" />
+        <div class="tile-text">
+          <h3>Weddings</h3>
+          <p>Venues, planners & dream days</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" alt="Community" />
+        <div class="tile-text">
+          <h3>Community</h3>
+          <p>News, groups & local notices</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="Medical" />
+        <div class="tile-text">
+          <h3>Medical</h3>
+          <p>Health services & pharmacies</p>
+        </div>
+      </a>
+      <a href="#" class="tile">
+        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" alt="Trades & Services" />
+        <div class="tile-text">
+          <h3>Trades & Services</h3>
+          <p>Trusted local trades</p>
+        </div>
+      </a>
     </div>
+  </main>
 
-    <div class="tile" style="background-image:url('../assets/tile-whatson.jpg')">
-      <div class="tile-overlay"><h3>What's On</h3><p>Events & things to do</p></div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">◉</span>
+          <span class="logo-text">Drift Destination</span>
+        </div>
+        <p>Your local guide to the Whitsundays.</p>
+        <div class="store-buttons">
+          <a href="#" class="store-btn">App Store</a>
+          <a href="#" class="store-btn">Google Play</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>Support</h4>
+          <a href="#">Contact</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Careers</a>
+          <a href="#">Partners</a>
+        </div>
+        <div>
+          <h4>Follow Us</h4>
+          <div class="social">
+            <a href="#">IG</a>
+            <a href="#">FB</a>
+            <a href="#">TikTok</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-tours.jpg')">
-      <div class="tile-overlay"><h3>Tours & Activities</h3><p>Book the best experiences</p></div>
+    <div class="footer-bottom">
+      <p>© 2026 Drift Destination. All rights reserved.</p>
     </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-eat.jpg')">
-      <div class="tile-overlay"><h3>Eat & Drink</h3><p>Great eats near you</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-weather.jpg')">
-      <div class="tile-overlay"><h3>Weather & Tides</h3><p>Live conditions & forecasts</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-accommodation.jpg')">
-      <div class="tile-overlay"><h3>Accommodation</h3><p>Resorts, stays & parks</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-wellness.jpg')">
-      <div class="tile-overlay"><h3>Wellness</h3><p>Massage, spa & health</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-transport.jpg')">
-      <div class="tile-overlay"><h3>Transport</h3><p>Cabs, cars, coaches & ferries</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-shopping.jpg')">
-      <div class="tile-overlay"><h3>Shopping</h3><p>Local stores & essentials</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-explore.jpg')">
-      <div class="tile-overlay"><h3>Explore</h3><p>Lookouts, trails & beaches</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-realestate.jpg')">
-      <div class="tile-overlay"><h3>Real Estate</h3><p>Agencies & agents</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-trades.jpg')">
-      <div class="tile-overlay"><h3>Trades & Services</h3><p>Locals who get it done</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-weddings.jpg')">
-      <div class="tile-overlay"><h3>Weddings</h3><p>Venues, photo & bridal</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-medical.jpg')">
-      <div class="tile-overlay"><h3>Medical</h3><p>GP, pharmacy, physio & more</p></div>
-    </div>
-
-    <div class="tile" style="background-image:url('../assets/tile-community.jpg')">
-      <div class="tile-overlay"><h3>Community</h3><p>Clubs, parkrun & local groups</p></div>
-    </div>
-
-  </div>
-</div>
-
+  </footer>
 </body>
 </html>
