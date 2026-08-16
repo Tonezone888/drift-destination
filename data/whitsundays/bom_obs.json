@@ -1,0 +1,16 @@
+{
+  "station": "Hamilton Island Airport",
+  "wmo": 94368,
+  "bom_product": "IDQ60801.94368",
+  "fetched_at": "2026-08-12T22:03:27.470850+00:00",
+  "local_date_time": "13/07:30am",
+  "wind_spd_kt": 26,
+  "gust_kt": 30,
+  "wind_dir": "SE",
+  "air_temp": 20.1,
+  "apparent_t": 11.3,
+  "rel_hum": 56,
+  "press_msl": 1020.9,
+  "lat": -20.4,
+  "lon": 149.0
+}
