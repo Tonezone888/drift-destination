@@ -81,6 +81,7 @@
       explore: "viewExplore",
       fav: "viewFav",
       book: "viewBook",
+      search: "viewHome",
       profile: "viewProfile",
     };
     Object.keys(map).forEach((k) => {
@@ -314,6 +315,15 @@
   document.querySelectorAll(".nav-item").forEach((btn) => {
     btn.addEventListener("click", () => {
       const v = btn.dataset.view;
+      // Search button: stay on home and focus the search box
+      if (v === "search") {
+        showView("home");
+        const input = document.getElementById("searchInput");
+        if (input) {
+          setTimeout(() => { input.focus(); input.select(); }, 50);
+        }
+        return;
+      }
       showView(v);
       if (v === "fav") renderFavs();
       if (v === "explore") cloneCatsToExplore();
@@ -388,15 +398,7 @@
 
   document.getElementById("btnSearchGo")?.addEventListener("click", runSearch);
 
-  // Bottom nav Search button → focus search + go home
-  document.getElementById("btnNavSearch")?.addEventListener("click", () => {
-    showView("home");
-    const input = document.getElementById("searchInput");
-    if (input) {
-      input.focus();
-      input.select();
-    }
-  });
+
 
   fetch(businessesUrl(), { cache: "no-store" })
     .then((r) => (r.ok ? r.json() : null))
