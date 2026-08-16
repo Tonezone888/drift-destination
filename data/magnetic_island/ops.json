@@ -1,0 +1,18 @@
+{
+  "destination_id": "magnetic_island",
+  "exported_at": "2026-08-14T18:48:14+10:00",
+  "live_alert": {
+    "active": false,
+    "text": "",
+    "detail": "",
+    "updated_at": ""
+  },
+  "call_a_cab": {
+    "company": "",
+    "phone": "",
+    "updated_at": ""
+  },
+  "specials": [],
+  "happy_hours": [],
+  "events": []
+}
