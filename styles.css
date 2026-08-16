@@ -1035,3 +1035,24 @@ body { overflow: hidden; }
     url("assets/tile-accommodation.jpg") center/cover no-repeat,
     linear-gradient(160deg, #0e7490, #134e4a);
 }
+
+/* Search Go button */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-go-btn {
+  flex-shrink: 0;
+  background: #0a6ebd;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+.search-go-btn:active {
+  opacity: 0.85;
+}

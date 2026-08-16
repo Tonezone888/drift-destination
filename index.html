@@ -160,6 +160,7 @@
       <div class="search-bar" role="search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
         <input class="search-input" id="searchInput" type="search" placeholder="Search places, events, deals…" autocomplete="off"/>
+        <button type="button" class="search-go-btn" id="btnSearchGo" aria-label="Search">Go</button>
       </div>
     </main>
 
@@ -206,9 +207,9 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.2 1.2 3.9 2.2.7-1 1.9-2.2 3.9-2.2C16.8 5.5 18.3 9 14.3 12.5 16.8 16.5 12 21 12 21z"/></svg>
       <span>Favourites</span>
     </button>
-    <button type="button" class="nav-item" data-view="book">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>
-      <span>Bookings</span>
+    <button type="button" class="nav-item" data-view="search" id="btnNavSearch">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+      <span>Search</span>
     </button>
     <button type="button" class="nav-item" data-view="profile">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 19c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>

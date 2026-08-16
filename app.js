@@ -357,10 +357,15 @@
     return 0;
   }
 
-  document.getElementById("searchInput")?.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter") return;
-    const q = e.target.value.trim().toLowerCase();
-    if (!q) return;
+  function runSearch() {
+    const input = document.getElementById("searchInput");
+    if (!input) return;
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      // Just focus the box if empty
+      input.focus();
+      return;
+    }
     showView("list");
     document.getElementById("listTitle").textContent = `Search: ${q}`;
     const ranked = listings
@@ -375,6 +380,22 @@
     }
     el.innerHTML = rows.map(cardHtml).join("");
     bindHearts(el);
+  }
+
+  document.getElementById("searchInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") runSearch();
+  });
+
+  document.getElementById("btnSearchGo")?.addEventListener("click", runSearch);
+
+  // Bottom nav Search button → focus search + go home
+  document.getElementById("btnNavSearch")?.addEventListener("click", () => {
+    showView("home");
+    const input = document.getElementById("searchInput");
+    if (input) {
+      input.focus();
+      input.select();
+    }
   });
 
   fetch(businessesUrl(), { cache: "no-store" })
