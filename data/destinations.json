@@ -1,0 +1,29 @@
+{
+  "destinations": [
+    {
+      "id": "whitsundays",
+      "name": "Whitsundays",
+      "blurb": "Airlie Beach QLD",
+      "status": "live"
+    },
+    {
+      "id": "magnetic_island",
+      "name": "Magnetic Island",
+      "blurb": "Magnetic Island QLD",
+      "status": "live"
+    },
+    {
+      "id": "proserpine",
+      "name": "Proserpine",
+      "blurb": "Proserpine QLD",
+      "status": "live"
+    },
+    {
+      "id": "hamilton_island",
+      "name": "Hamilton Island",
+      "blurb": "Hamilton Island QLD",
+      "status": "live"
+    }
+  ],
+  "updated": "2026-08-13T10:23:48"
+}
