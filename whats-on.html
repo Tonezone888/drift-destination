@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>What's On · Drift Destination</title>
+  <script src="photo-defaults.js"></script>
+  <script src="favs.js"></script>
+  <style>
+    html, body {
+      margin: 0; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif;
+      height: auto !important; min-height: 100%;
+      overflow-x: hidden !important; overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      background: #0a1628;
+    }
+    .hero-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(160deg,#041018,#0c4a6e), url("assets/hero-whitsundays.jpg") center/cover;
+    }
+    .wrap { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 12px 14px 100px; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .back { color: #5eead4; text-decoration: none; font-size: 1.3rem; }
+    .title { margin: 0; font-size: 1.2rem; font-weight: 800; flex: 1; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab {
+      flex: 1; text-align: center; padding: 9px 8px; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+      cursor: pointer;
+    }
+    .tab.active { color: #042028; background: rgba(94,234,212,0.9); border-color: transparent; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #5eead4; opacity: 0.9;
+      margin: 8px 2px 10px;
+    }
+    .card {
+      position: relative; display: flex; gap: 12px; align-items: stretch;
+      padding: 10px; margin: 0 0 10px; border-radius: 14px; color: inherit;
+      background: rgba(8,28,44,0.62); border: 1px solid rgba(255,255,255,0.12);
+      text-decoration: none;
+    }
+    .date-block {
+      flex-shrink: 0; width: 48px; border-radius: 10px;
+      background: rgba(94,234,212,0.12); border: 1px solid rgba(94,234,212,0.28);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 8px 4px;
+    }
+    .date-day { font-size: 1.25rem; font-weight: 800; line-height: 1; color: #5eead4; }
+    .date-month {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; opacity: 0.85; margin-top: 3px;
+    }
+    .card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+    .card-name { font-weight: 700; font-size: 0.95rem; line-height: 1.25; }
+    .card-offer { font-size: 0.84rem; margin-top: 4px; color: #fde68a; font-weight: 600; }
+    .card-when { font-size: 0.74rem; opacity: 0.65; margin-top: 2px; line-height: 1.35; }
+    .card-photo {
+      width: 88px; min-height: 88px; flex-shrink: 0; border-radius: 10px; object-fit: cover;
+      background: rgba(0,0,0,0.25);
+    }
+    .empty { opacity: 0.7; padding: 24px 8px; text-align: center; }
+    .add-listing { display: block; text-align: center; margin: 18px 0 8px; text-decoration: none; }
+    .add-listing span { color: #5eead4; font-weight: 700; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="index.html">←</a>
+      <h1 class="title">What's On</h1>
+    </div>
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" data-filter="all">All</button>
+      <button type="button" class="tab" data-filter="events">Events</button>
+      <button type="button" class="tab" data-filter="music">Live music</button>
+    </div>
+    <div id="content"><p class="empty">Loading…</p></div>
+    <a class="add-listing" href="signup.html?intent=event"><span>Add your event +</span></a>
+  </div>
+  <script>
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function esc(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+    function isReal(v) {
+      var s = String(v || "").trim();
+      return s && s.toLowerCase() !== "n/a" && s !== "-" && s !== "none";
+    }
+    function norm(s) {
+      return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    }
+    var MONTHS = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var ALL = [];
+    var BIZ = [];
+    var filter = "all";
+
+    function isMusic(e) {
+      var blob = ((e.title || "") + " " + (e.category || "") + " " + (e.detail || "")).toLowerCase();
+      return /music|band|dj|live music|gig|concert|acoustic|karaoke/.test(blob)
+        || e.category === "music" || e.category === "live music";
+    }
+    function isEvent(e) { return !isMusic(e); }
+
+    function parseDate(e) {
+      var d = e.date || "";
+      var m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m) return { day: String(parseInt(m[3],10)), month: MONTHS[parseInt(m[2],10)], sort: d };
+      return { day: "–", month: "", sort: d || "9999" };
+    }
+
+    function extractVenueName(title, where) {
+      var t = title || "";
+      var m = t.match(/\bat\s+(.+)$/i);
+      if (m) return m[1].replace(/\s*[—–-].*$/, "").trim();
+      var known = ["Boaty's", "Boaty's", "Club Whitsunday", "Club Whitsundays", "Airlie Beach Hotel",
+        "Whitsunday Sailing Club", "Jubilee Tavern", "The Deck", "Northerlies", "Sorrento"];
+      for (var i = 0; i < known.length; i++) {
+        if (t.toLowerCase().indexOf(known[i].toLowerCase()) >= 0) return known[i];
+      }
+      if (where) {
+        var w = where.split(",")[0].trim();
+        if (w.length > 3 && w.length < 55) return w;
+      }
+      return "";
+    }
+
+    function findBiz(name) {
+      var n = norm(name);
+      if (!n) return null;
+      var hit = BIZ.find(function (b) {
+        return norm(b.name || b["Business Name"] || b.business) === n;
+      });
+      if (hit) return hit;
+      return BIZ.find(function (b) {
+        var bn = norm(b.name || b["Business Name"] || b.business);
+        return bn && (bn.includes(n) || n.includes(bn));
+      }) || null;
+    }
+
+    function fallbackPhoto(e) {
+      var blob = ((e.title || "") + " " + (e.category || "") + " " + (e.detail || "")).toLowerCase();
+      if (/market|shopping|stall/.test(blob)) return "assets/default-shopping.jpg";
+      if (/race week|regatta|sail race/.test(blob)) return "assets/default-boat.jpg";
+      if (/bingo|trivia|karaoke|toad|pool comp|musical bingo/.test(blob)) return "assets/default-bar.jpg";
+      if (/music|acoustic|dj|band|live music|gig/.test(blob)) return "assets/default-events.png";
+      return "assets/default-events.png";
+    }
+
+    function highlightLine(e) {
+      var t = (e.title || "").trim();
+      var time = e.time || "";
+      var short = t.replace(/\s+at\s+.+$/i, "").trim();
+      if (time && time.length < 40) return short + (short ? " · " : "") + time;
+      return short || t;
+    }
+
+    function placeUrl(b, name) {
+      var phone = isReal(b.phone || b.Phone) ? String(b.phone || b.Phone).trim() : "";
+      var web = isReal(b.website || b.Website) ? String(b.website || b.Website).trim() : "";
+      var loc = b.locality || b.Locality || "";
+      var cat = b.category || b.Category || "";
+      var type = b.type || b.Type || "";
+      var id = b.id || b.DriftID || name;
+      var photo = (window.driftPhotoFor
+        ? window.driftPhotoFor(Object.assign({}, b, { name: name, category: cat, type: type }))
+        : "assets/default-events.png");
+      return "place.html?id=" + encodeURIComponent(id) +
+        "&name=" + encodeURIComponent(name) +
+        "&locality=" + encodeURIComponent(loc) +
+        "&phone=" + encodeURIComponent(phone) +
+        "&website=" + encodeURIComponent(web) +
+        "&category=" + encodeURIComponent(cat) +
+        "&type=" + encodeURIComponent(type) +
+        "&photo=" + encodeURIComponent(photo) +
+        "&rating=" + encodeURIComponent(b.rating || b["Google Rating"] || "") +
+        "&reviews=" + encodeURIComponent(b.reviews || b["Google Review Count"] || "") +
+        "&address=" + encodeURIComponent(b.address || b.Address || "");
+    }
+
+    function cardHtml(e) {
+      var dt = parseDate(e);
+      var when = e.when || e.time || "";
+      var where = e.where || e.location || "";
+      var venueName = extractVenueName(e.title || "", where);
+      var b = venueName ? findBiz(venueName) : null;
+      var name = b ? (b.name || b["Business Name"] || venueName) : "";
+      var photo;
+      if (b && window.driftPhotoFor) {
+        photo = window.driftPhotoFor(Object.assign({}, b, {
+          name: name,
+          category: b.category || b.Category || "",
+          type: b.type || b.Type || ""
+        }));
+      } else {
+        photo = fallbackPhoto(e);
+      }
+      var href;
+      if (b) {
+        href = placeUrl(b, name);
+      } else {
+        href = "event.html?id=" + encodeURIComponent(e.id || "") +
+          "&title=" + encodeURIComponent(e.title || "") +
+          "&date=" + encodeURIComponent(e.date || "") +
+          "&time=" + encodeURIComponent(e.time || when) +
+          "&where=" + encodeURIComponent(where) +
+          "&detail=" + encodeURIComponent(e.detail || "") +
+          "&category=" + encodeURIComponent(e.category || "") +
+          "&photo=" + encodeURIComponent(photo);
+      }
+      var offer = highlightLine(e);
+      var metaBits = [];
+      if (when) metaBits.push(when);
+      if (where) metaBits.push(where);
+      var meta = metaBits.join(" · ");
+      return (
+        '<a class="card" href="' + href + '">' +
+          '<div class="date-block"><div class="date-day">' + esc(dt.day) + '</div>' +
+          '<div class="date-month">' + esc(dt.month) + '</div></div>' +
+          '<div class="card-body">' +
+            '<div class="card-name">' + esc(e.title || "Event") + '</div>' +
+            (offer ? '<div class="card-offer">' + esc(offer) + '</div>' : '') +
+            (meta ? '<div class="card-when">' + esc(meta) + '</div>' : '') +
+          '</div>' +
+          '<img class="card-photo" src="' + esc(photo) + '" alt="" loading="lazy"/>' +
+        '</a>'
+      );
+    }
+
+    function render() {
+      var rows = ALL.slice();
+      if (filter === "music") rows = rows.filter(isMusic);
+      else if (filter === "events") rows = rows.filter(isEvent);
+      rows.sort(function (a, b) { return parseDate(a).sort.localeCompare(parseDate(b).sort); });
+      var el = document.getElementById("content");
+      if (!rows.length) {
+        el.innerHTML = filter === "music"
+          ? '<p class="empty">No live music listed yet.</p>'
+          : '<p class="empty">No upcoming events yet.</p>';
+        return;
+      }
+      var today = new Date();
+      var todayStr = today.toISOString().slice(0, 10);
+      var cut = new Date(today.getTime() + 14 * 864e5).toISOString().slice(0, 10);
+      var soon = [], later = [];
+      rows.forEach(function (e) {
+        var d = e.date || "";
+        if (d && d >= todayStr && d <= cut) soon.push(e);
+        else later.push(e);
+      });
+      var html = "";
+      if (soon.length) html += '<div class="section-label">Coming up</div>' + soon.map(cardHtml).join("");
+      if (later.length) html += '<div class="section-label">Later</div>' + later.map(cardHtml).join("");
+      if (!soon.length && !later.length) html = rows.map(cardHtml).join("");
+      el.innerHTML = html;
+    }
+
+    document.querySelectorAll(".tab").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        filter = btn.getAttribute("data-filter");
+        document.querySelectorAll(".tab").forEach(function (b) { b.classList.toggle("active", b === btn); });
+        render();
+      });
+    });
+
+    async function loadBiz() {
+      var id = destId();
+      var urls = ["data/" + id + "/businesses.json?t=" + Date.now(), "data/businesses.json?t=" + Date.now()];
+      for (var i = 0; i < urls.length; i++) {
+        try {
+          var r = await fetch(urls[i]);
+          if (!r.ok) continue;
+          var j = await r.json();
+          if (Array.isArray(j)) return j;
+          if (j && Array.isArray(j.businesses)) return j.businesses;
+        } catch (e) {}
+      }
+      return [];
+    }
+
+    Promise.all([
+      fetch("data/" + destId() + "/ops.json?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .catch(function () { return {}; }),
+      loadBiz()
+    ]).then(function (pair) {
+      var data = pair[0];
+      BIZ = pair[1] || [];
+      ALL = Array.isArray(data.events) ? data.events.filter(function (e) {
+        return !e.status || e.status === "live" || e.status === "published";
+      }) : [];
+      render();
+    }).catch(function () {
+      document.getElementById("content").innerHTML = '<p class="empty">Could not load events.</p>';
+    });
+  </script>
+</body>
+</html>

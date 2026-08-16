@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Log in · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.6) 0%, rgba(8,20,40,0.9) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2;
+      padding: 18px 20px 40px;
+      min-height: 100vh;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 28px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0;
+      color: #93c5fd; text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+    }
+    .title {
+      font-size: 1.35rem; font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    h1 {
+      font-size: 1.7rem; font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 0.9rem; opacity: 0.7; margin-bottom: 28px;
+    }
+    label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      opacity: 0.7; margin-bottom: 6px; margin-top: 16px;
+    }
+    input {
+      width: 100%; padding: 13px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px; font-size: 1rem; font-family: inherit;
+      background: rgba(255,255,255,0.12);
+      color: #fff; backdrop-filter: blur(12px);
+    }
+    input::placeholder { color: rgba(255,255,255,0.4); }
+    input:focus {
+      outline: none; border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+    }
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      margin-top: 24px; background: #3b82f6; color: #fff;
+    }
+    .links {
+      text-align: center; margin-top: 20px;
+      font-size: 0.88rem; opacity: 0.7;
+    }
+    .links a { color: #93c5fd; font-weight: 600; text-decoration: none; }
+    .note {
+      margin-top: 28px; padding: 14px;
+      background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 12px; font-size: 0.82rem;
+      color: #93c5fd; line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="settings.html">← Close</a>
+      <div class="title">Log in</div>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to save favourites and manage your account.</p>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="you@email.com" autocomplete="email"/>
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Your password" autocomplete="current-password"/>
+    <button class="btn" id="btnLogin">Log in</button>
+    <div class="links">
+      Don't have an account? <a href="signup.html">Sign up</a>
+    </div>
+    <div class="note">
+      Prototype only — login is visual for now. Real accounts come when we connect the backend.
+    </div>
+  </div>
+  <script>
+    document.getElementById("btnLogin").addEventListener("click", () => {
+      const email = document.getElementById("email").value.trim();
+      if (!email) { alert("Enter your email"); return; }
+      localStorage.setItem("drift_user", JSON.stringify({ email, name: email.split("@")[0] }));
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

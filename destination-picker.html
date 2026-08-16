@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Choose destination · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.55) 0%, rgba(8,20,40,0.88) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2;
+      padding: 18px 16px 40px;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 18px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem; text-decoration: none;
+    }
+    .title {
+      font-size: 1.35rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .intro p {
+      font-size: 0.9rem;
+      opacity: 0.65;
+    }
+    .list {
+      display: flex; flex-direction: column; gap: 11px; flex: 1;
+    }
+    .dest {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 15px 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      cursor: pointer;
+      color: inherit;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+    .dest:active { transform: scale(0.98); background: rgba(255,255,255,0.2); }
+    .dest.active {
+      border-color: rgba(103,232,249,0.5);
+      background: rgba(103,232,249,0.14);
+    }
+    .dest-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .dest-info { flex: 1; min-width: 0; }
+    .dest-name {
+      font-size: 1.05rem; font-weight: 650;
+      letter-spacing: -0.015em; margin-bottom: 2px;
+    }
+    .dest-blurb { font-size: 0.8rem; opacity: 0.65; }
+    .check {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.28);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; opacity: 0;
+    }
+    .dest.active .check {
+      opacity: 1;
+      background: #67e8f9;
+      border-color: #67e8f9;
+      color: #0a1628;
+      font-weight: 800;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.72rem;
+      opacity: 0.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="settings.html">←</a>
+      <h1 class="title">Destination</h1>
+    </div>
+    <div class="intro">
+      <p>Where are you exploring?</p>
+    </div>
+    <div class="list" id="list"></div>
+    <p class="footer">You can change this anytime in Settings</p>
+  </div>
+  <script>
+    const DESTINATIONS_FALLBACK = [
+      { id: "whitsundays", name: "Whitsundays", blurb: "Airlie Beach · islands · reef", icon: "🏝️" }
+    ];
+    let DESTINATIONS = DESTINATIONS_FALLBACK;
+
+    async function loadDestinations() {
+      try {
+        const res = await fetch("data/destinations.json?t=" + Date.now());
+        if (!res.ok) throw new Error("no list");
+        const data = await res.json();
+        const list = data.destinations || [];
+        if (list.length) {
+          DESTINATIONS = list.map(d => ({
+            id: d.id,
+            name: d.name,
+            blurb: d.blurb || d.name,
+            icon: d.icon || "📍"
+          }));
+        }
+      } catch (e) {
+        DESTINATIONS = DESTINATIONS_FALLBACK;
+      }
+    }
+
+    const STORAGE_KEY = "drift_destination_v1";
+
+    function getCurrent() {
+      try { return localStorage.getItem(STORAGE_KEY) || "whitsundays"; }
+      catch { return "whitsundays"; }
+    }
+
+    function setDestination(id) {
+      localStorage.setItem(STORAGE_KEY, id);
+      window.location.href = "index.html";
+    }
+
+    function paintDestinations() {
+      const current = getCurrent();
+      const list = document.getElementById("list");
+      list.innerHTML = DESTINATIONS.map(d =>
+        '<div class="dest ' + (d.id === current ? "active" : "") + '" data-id="' + d.id + '">' +
+          '<div class="dest-icon">' + (d.icon || "📍") + '</div>' +
+          '<div class="dest-info">' +
+            '<div class="dest-name">' + d.name + '</div>' +
+            '<div class="dest-blurb">' + (d.blurb || "") + '</div>' +
+          '</div>' +
+          '<div class="check">✓</div>' +
+        '</div>'
+      ).join("");
+      list.querySelectorAll(".dest").forEach(el => {
+        el.addEventListener("click", () => setDestination(el.dataset.id));
+      });
+    }
+    loadDestinations().then(function(){ paintDestinations(); });
+  </script>
+</body>
+</html>

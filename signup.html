@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Sign up · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.6) 0%, rgba(8,20,40,0.9) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2;
+      padding: 18px 20px 48px;
+      min-height: 100vh;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 24px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0;
+      color: #93c5fd; text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+    }
+    .title {
+      font-size: 1.35rem; font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    h1 {
+      font-size: 1.7rem; font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 6px;
+    }
+    .sub {
+      font-size: 0.9rem; opacity: 0.7; margin-bottom: 22px;
+    }
+    label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      opacity: 0.7; margin-bottom: 6px; margin-top: 14px;
+    }
+    input {
+      width: 100%; padding: 13px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px; font-size: 1rem; font-family: inherit;
+      background: rgba(255,255,255,0.12);
+      color: #fff; backdrop-filter: blur(12px);
+    }
+    input::placeholder { color: rgba(255,255,255,0.4); }
+    input:focus {
+      outline: none; border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+    }
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      margin-top: 22px; background: #3b82f6; color: #fff;
+    }
+    .links {
+      text-align: center; margin-top: 18px;
+      font-size: 0.88rem; opacity: 0.7;
+    }
+    .links a { color: #93c5fd; font-weight: 600; text-decoration: none; }
+    .sub-card {
+      margin-top: 28px;
+      background: linear-gradient(135deg, rgba(29,78,216,0.92) 0%, rgba(59,130,246,0.88) 100%);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 18px; padding: 20px 18px;
+      box-shadow: 0 8px 24px rgba(29,78,216,0.35);
+    }
+    .sub-card h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+    .sub-card ul { list-style: none; margin-bottom: 14px; }
+    .sub-card li {
+      font-size: 0.88rem; opacity: 0.95;
+      padding: 4px 0 4px 18px; position: relative;
+    }
+    .sub-card li::before { content: "•"; position: absolute; left: 4px; }
+    .sub-price { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; }
+    .sub-btn {
+      width: 100%; padding: 12px; border: none; border-radius: 12px;
+      background: #fff; color: #1d4ed8; font-weight: 700;
+      font-size: 0.95rem; cursor: pointer;
+    }
+    .note {
+      margin-top: 20px; padding: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px; font-size: 0.8rem;
+      opacity: 0.65; line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="settings.html">← Close</a>
+      <div class="title">Sign up</div>
+    </div>
+    <h1>Create account</h1>
+    <p class="sub">Save favourites and unlock local deals.</p>
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Your name" autocomplete="name"/>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="you@email.com" autocomplete="email"/>
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Create a password" autocomplete="new-password"/>
+    <button class="btn" id="btnSignup">Create account</button>
+    <div class="links">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+    <div class="sub-card">
+      <h2>Drift Destination+</h2>
+      <ul>
+        <li>Early access to specials</li>
+        <li>Event alerts for your area</li>
+        <li>Save unlimited favourites</li>
+        <li>Support local operators</li>
+      </ul>
+      <div class="sub-price">From $4.99/month</div>
+      <button class="sub-btn" type="button" id="btnSubscribe">Learn more / Subscribe</button>
+    </div>
+    <div class="note">
+      Prototype only — sign-up and subscriptions are visual for now. Payments and real accounts come with the backend.
+    </div>
+  </div>
+  <script>
+    document.getElementById("btnSignup").addEventListener("click", () => {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      if (!name || !email) { alert("Name and email are required"); return; }
+      localStorage.setItem("drift_user", JSON.stringify({ name, email }));
+      window.location.href = "index.html";
+    });
+    document.getElementById("btnSubscribe").addEventListener("click", () => {
+      alert("Subscriptions coming soon — this is the offer layout for now.");
+    });
+  </script>
+</body>
+</html>

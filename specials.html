@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Today’s Specials · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      line-height: 1.35;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(8, 20, 40, 0.55) 0%,
+        rgba(8, 20, 40, 0.7) 50%,
+        rgba(8, 20, 40, 0.88) 100%
+      );
+      z-index: 1;
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      padding: 18px 16px 34px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 20px;
+      min-height: 36px;
+    }
+    .back {
+      position: absolute;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      flex: 1;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 16px;
+      padding: 12px 12px 12px 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .info {
+      flex: 1;
+      min-width: 0;
+    }
+    .business {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+    .offer {
+      font-size: 0.84rem;
+      opacity: 0.8;
+      font-weight: 450;
+    }
+    .meta {
+      font-size: 0.72rem;
+      opacity: 0.55;
+      margin-top: 3px;
+    }
+
+    .photo {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      opacity: 0.6;
+      font-size: 0.95rem;
+    }
+
+    .bottom-nav {
+      margin-top: 22px;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 8px 4px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      opacity: 0.55;
+      font-weight: 500;
+      text-decoration: none;
+      color: inherit;
+    }
+    .nav-item.active {
+      opacity: 1;
+      color: #67e8f9;
+    }
+    .nav-icon { font-size: 1.15rem; }
+  
+
+
+
+    .add-listing {
+      display: block;
+      max-width: 240px;
+      margin: 20px auto 10px;
+      padding: 9px 16px;
+      border-radius: 11px;
+      text-decoration: none;
+      text-align: center;
+      background: rgba(8, 47, 73, 0.55);
+      border: 1.5px solid rgba(94, 234, 212, 0.75);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .add-listing span {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #5eead4;
+    }
+
+  
+    .sec-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #5eead4; opacity: 0.95;
+      margin: 18px 0 10px; padding-left: 2px;
+    }
+    .sec-label:first-child { margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="page">
+    <div class="top">
+      <a class="back" href="index.html">←</a>
+      <h1 class="title">Specials</h1>
+    </div>
+
+    <div class="list" id="list">
+      <div class="empty">Loading specials…</div>
+    </div>
+                    <a class="add-listing" href="signup.html">
+      <span>Add your business +</span>
+    </a>
+
+    <nav class="bottom-nav" aria-label="Main">
+      <a class="nav-item" href="index.html">
+        <span>🏠</span><span>Home</span>
+      </a>
+      <a class="nav-item" href="index.html#explore">
+        <span>🔍</span><span>Explore</span>
+      </a>
+      <a class="nav-item" href="favourites.html">
+        <span>♥</span><span>Favourites</span>
+      </a>
+      <a class="nav-item" href="index.html">
+        <span>📅</span><span>Bookings</span>
+      </a>
+      <a class="nav-item" href="settings.html">
+        <span>👤</span><span>Profile</span>
+      </a>
+    </nav>
+</div>
+
+  <script>
+
+    function destDataId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+
+    // ============================================
+    // Load specials from ops data (or fallback mock)
+    // ============================================
+    function brisbaneNow() {
+      try {
+        return new Date(new Date().toLocaleString("en-US", { timeZone: "Australia/Brisbane" }));
+      } catch (e) {
+        return new Date();
+      }
+    }
+    function ymd(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return y + "-" + m + "-" + day;
+    }
+    function dayName(d) {
+      return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
+    }
+    function specialOnDate(s, d) {
+      if ((s.status || "live") !== "live") return false;
+      const ds = ymd(d);
+      const start = (s.start || "").slice(0, 10);
+      const end = (s.end || "").slice(0, 10);
+      if (start && ds < start) return false;
+      if (end && ds > end) return false;
+      const days = s.days || [];
+      if (days.length && !days.includes(dayName(d))) return false;
+      return true;
+    }
+    async function loadSpecialsBuckets() {
+      const now = brisbaneNow();
+      const todayD = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const tomD = new Date(todayD);
+      tomD.setDate(tomD.getDate() + 1);
+      const hour = now.getHours();
+      const showToday = hour < 20; // Today block until 8pm AEST
+      let all = [];
+      try {
+        const res = await fetch("data/" + destDataId() + "/ops.json?t=" + Date.now());
+        if (!res.ok) throw new Error("no ops");
+        const data = await res.json();
+        all = data.specials || [];
+      } catch {
+        all = [
+          { business: "Sorrento's", title: "2-for-1 Pizzas", detail: "2:00 – 4:00 PM", start: ymd(todayD), end: ymd(todayD), status: "live" },
+          { business: "Domino Yacht Charters", title: "25% off half-day", detail: "Book ahead · Departs morning", start: ymd(tomD), end: ymd(tomD), status: "live" },
+          { business: "Airlie Beach Massage", title: "15% off", detail: "All day tomorrow", start: ymd(tomD), end: ymd(tomD), status: "live" }
+        ];
+      }
+      const today = showToday ? all.filter(s => specialOnDate(s, todayD)) : [];
+      const tomorrow = all.filter(s => specialOnDate(s, tomD));
+      return { today, tomorrow, showToday };
+    }
+
+    function placeholderPhoto(name) {
+      // Simple coloured placeholder until real Google photos are wired
+      const colours = ["3b82f6", "10b981", "f59e0b", "8b5cf6", "ef4444", "06b6d4"];
+      const i = (name || "").length % colours.length;
+      return `https://via.placeholder.com/112x112/${colours[i]}/ffffff?text=${encodeURIComponent((name || "?").slice(0, 2).toUpperCase())}`;
+    }
+
+    function cardHtml(s) {
+      const photo = s.photo || placeholderPhoto(s.business);
+      return `
+          <div class="card">
+            <div class="info">
+              <div class="business">${escapeHtml(s.business || "")}</div>
+              <div class="offer">${escapeHtml(s.title || "")}</div>
+              ${s.detail ? `<div class="meta">${escapeHtml(s.detail)}</div>` : ""}
+            </div>
+            <img class="photo" src="${photo}" alt="" loading="lazy"
+                 onerror="this.src='${placeholderPhoto(s.business)}'">
+          </div>`;
+    }
+    async function render() {
+      const list = document.getElementById("list");
+      const { today, tomorrow, showToday } = await loadSpecialsBuckets();
+      if (!today.length && !tomorrow.length) {
+        list.innerHTML = `<div class="empty">No specials right now.<br>Check back later.</div>`;
+        return;
+      }
+      let html = "";
+      if (showToday && today.length) {
+        html += `<div class="sec-label">Today</div>` + today.map(cardHtml).join("");
+      }
+      if (tomorrow.length) {
+        html += `<div class="sec-label">Tomorrow</div>` + tomorrow.map(cardHtml).join("");
+      } else if (showToday && today.length && !tomorrow.length) {
+        /* only today — fine */
+      }
+      if (!html) {
+        list.innerHTML = `<div class="empty">No specials right now.<br>Check back later.</div>`;
+        return;
+      }
+      list.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    render();
+  </script>
+</body>
+</html>

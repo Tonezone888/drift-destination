@@ -1,0 +1,68 @@
+Drift hub tile photos — replace these files in Visitor_Site/assets/
+
+ACCOMMODATION
+  hub-resort.jpg
+  hub-apartment.jpg
+  hub-hotel.jpg
+  hub-backpackers.jpg
+  hub-caravan.jpg
+
+EAT & DRINK
+  hub-restaurant.jpg
+  hub-cafe.jpg
+  hub-bar.jpg
+  hub-takeaway.jpg
+
+WELLNESS
+  hub-massage.jpg
+  hub-hair.jpg
+  hub-spa.jpg
+  hub-fitness.jpg
+  hub-yoga.jpg
+
+EXPLORE
+  hub-lookout.jpg
+  hub-trail.jpg
+  hub-beach.jpg
+  hub-photo-spot.jpg
+  hub-swim.jpg
+
+SHOPPING
+  hub-markets.jpg
+  hub-fashion.jpg
+  hub-outdoor.jpg
+  hub-hardware.jpg
+  hub-bottle.jpg
+  hub-essentials.jpg
+  hub-retail.jpg
+
+WEDDINGS
+  hub-venue.jpg
+  hub-celebrant.jpg
+  hub-photo-video.jpg
+  hub-wedding-hair.jpg
+  hub-florist.jpg
+  hub-cake.jpg
+  hub-planner.jpg
+
+TRADES
+  hub-auto.jpg
+  hub-marine.jpg
+  hub-building.jpg
+  hub-home.jpg
+  hub-garden.jpg
+  hub-pets.jpg
+  hub-professional.jpg
+  hub-other-trade.jpg
+
+REAL ESTATE
+  hub-agency.jpg
+  hub-agent.jpg
+  hub-manager.jpg
+
+TOURS (already live)
+  default-boat.jpg
+  default-fishing.jpg
+  default-bus.jpg
+  default-hire.jpg
+  default-scenic.jpg

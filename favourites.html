@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Favourites · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      line-height: 1.35;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(8, 20, 40, 0.55) 0%,
+        rgba(8, 20, 40, 0.7) 50%,
+        rgba(8, 20, 40, 0.88) 100%
+      );
+      z-index: 1;
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      padding: 18px 16px 34px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 20px;
+      min-height: 36px;
+    }
+    .back {
+      position: absolute;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      flex: 1;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 16px;
+      padding: 14px 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .info {
+      flex: 1;
+      min-width: 0;
+    }
+    .name {
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin-bottom: 2px;
+    }
+    .meta {
+      font-size: 0.78rem;
+      opacity: 0.65;
+    }
+
+    .heart {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border: none;
+      color: #f87171;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      opacity: 0.7;
+    }
+    .empty-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+    .empty-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .empty-sub {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+
+    .bottom-nav {
+      margin-top: 22px;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 8px 4px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      opacity: 0.55;
+      font-weight: 500;
+      text-decoration: none;
+      color: inherit;
+    }
+    .nav-item.active {
+      opacity: 1;
+      color: #67e8f9;
+    }
+    .nav-icon { font-size: 1.15rem; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="page">
+    <div class="top">
+      <a class="back" href="index.html">←</a>
+      <h1 class="title">Favourites</h1>
+    </div>
+
+    <div class="list" id="list"></div>
+
+    <div class="bottom-nav">
+      <a class="nav-item" href="index.html">
+        <div class="nav-icon">🧭</div>
+        <span>Explore</span>
+      </a>
+      <a class="nav-item" href="specials.html">
+        <div class="nav-icon">🏷</div>
+        <span>Specials</span>
+      </a>
+      <a class="nav-item active" href="favourites.html">
+        <div class="nav-icon">♥</div>
+        <span>Favourites</span>
+      </a>
+      <a class="nav-item" href="see-and-do.html">
+        <div class="nav-icon">📍</div>
+        <span>See & Do</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "drift_favourites_v1";
+
+    function loadFavourites() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavourites(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function removeFavourite(id) {
+      const list = loadFavourites().filter(f => f.id !== id);
+      saveFavourites(list);
+      render();
+    }
+
+    function render() {
+      const list = loadFavourites();
+      const el = document.getElementById("list");
+
+      if (!list.length) {
+        el.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">♡</div>
+            <div class="empty-title">No favourites yet</div>
+            <div class="empty-sub">Tap the heart on any place<br>to save it here.</div>
+          </div>
+        `;
+        return;
+      }
+
+      el.innerHTML = list.map(f => `
+        <div class="card">
+          <div class="info">
+            <div class="name">${escapeHtml(f.name || "Unknown")}</div>
+            <div class="meta">${escapeHtml(f.category || f.meta || "")}</div>
+          </div>
+          <button class="heart" onclick="removeFavourite('${f.id}')" title="Remove">♥</button>
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Demo seed so the page isn’t empty on first look
+    if (loadFavourites().length === 0) {
+      saveFavourites([
+        { id: "demo1", name: "Sorrento’s", category: "Restaurant · Airlie Beach" },
+        { id: "demo2", name: "Whitehaven Beach", category: "Beach · Whitsundays" },
+        { id: "demo3", name: "Airlie Beach Lagoon", category: "Swimming · Airlie Beach" }
+      ]);
+    }
+
+    render();
+  </script>
+</body>
+</html>

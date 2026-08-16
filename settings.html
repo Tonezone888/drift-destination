@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Settings · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.6) 0%, rgba(8,20,40,0.88) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2;
+      padding: 18px 16px 40px;
+      min-height: 100vh;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 20px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0;
+      color: #93c5fd; text-decoration: none;
+      font-size: 0.95rem; font-weight: 500;
+    }
+    .title {
+      font-size: 1.35rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .group {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .row {
+      display: flex; align-items: center;
+      padding: 14px 16px;
+      text-decoration: none; color: inherit;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      gap: 12px;
+    }
+    .row:last-child { border-bottom: none; }
+    .row-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+      background: rgba(255,255,255,0.12);
+    }
+    .row-label { flex: 1; font-size: 0.95rem; font-weight: 500; }
+    .row-meta { font-size: 0.8rem; opacity: 0.55; }
+    .chevron { opacity: 0.4; font-size: 1.1rem; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 600; opacity: 0.5;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin: 6px 4px 8px;
+    }
+    .guest-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 18px; margin-bottom: 16px; text-align: center;
+    }
+    .guest-card p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 14px; line-height: 1.4; }
+    .guest-card .btn-row { display: flex; gap: 10px; }
+    .guest-card a {
+      flex: 1; padding: 12px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-size: 0.9rem; text-align: center;
+    }
+    .btn-primary { background: #3b82f6; color: #fff; }
+    .btn-secondary { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+    .account-card {
+      background: linear-gradient(135deg, rgba(29,78,216,0.9) 0%, rgba(59,130,246,0.85) 100%);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px; padding: 18px; margin-bottom: 16px;
+    }
+    .account-card .name { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
+    .account-card .email { font-size: 0.82rem; opacity: 0.85; }
+    .account-card .actions { display: flex; gap: 10px; margin-top: 14px; }
+    .account-card a {
+      flex: 1; text-align: center; padding: 10px; border-radius: 10px;
+      background: rgba(255,255,255,0.2); color: #fff; text-decoration: none;
+      font-weight: 600; font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="index.html">← Close</a>
+      <h1 class="title">Settings</h1>
+    </div>
+    <div id="accountArea"></div>
+    <div class="section-label">Account</div>
+    <div class="group">
+      <a class="row" href="login.html">
+        <div class="row-icon">🔑</div>
+        <div class="row-label">Log in</div>
+        <div class="chevron">›</div>
+      </a>
+      <a class="row" href="signup.html">
+        <div class="row-icon">✨</div>
+        <div class="row-label">Sign up</div>
+        <div class="chevron">›</div>
+      </a>
+    </div>
+    <div class="section-label">App</div>
+    <div class="group">
+      <a class="row" href="favourites.html">
+        <div class="row-icon">♥</div>
+        <div class="row-label">Favourites</div>
+        <div class="chevron">›</div>
+      </a>
+      <a class="row" href="specials.html">
+        <div class="row-icon">🏷</div>
+        <div class="row-label">Today's Specials</div>
+        <div class="chevron">›</div>
+      </a>
+      <a class="row" href="whats-on.html">
+        <div class="row-icon">📅</div>
+        <div class="row-label">What's On</div>
+        <div class="chevron">›</div>
+      </a>
+    </div>
+    <div class="section-label">Destination</div>
+    <div class="group">
+      <a class="row" href="destination-picker.html">
+        <div class="row-icon">📍</div>
+        <div class="row-label">Location</div>
+        <div class="row-meta" id="destLabel">Whitsundays</div>
+        <div class="chevron">›</div>
+      </a>
+    </div>
+  </div>
+  <script>
+    const user = (() => { try { return JSON.parse(localStorage.getItem("drift_user")); } catch { return null; } })();
+    const area = document.getElementById("accountArea");
+    if (user && user.email) {
+      area.innerHTML = `
+        <div class="account-card">
+          <div class="name">${user.name || "Member"}</div>
+          <div class="email">${user.email}</div>
+          <div class="actions">
+            <a href="signup.html">Subscribe</a>
+            <a href="#" id="btnLogout">Log out</a>
+          </div>
+        </div>`;
+      document.getElementById("btnLogout")?.addEventListener("click", (e) => {
+        e.preventDefault(); localStorage.removeItem("drift_user"); location.reload();
+      });
+    } else {
+      area.innerHTML = `
+        <div class="guest-card">
+          <p>Log in or sign up to save favourites and get local deals.</p>
+          <div class="btn-row">
+            <a class="btn-primary" href="login.html">Log in</a>
+            <a class="btn-secondary" href="signup.html">Sign up</a>
+          </div>
+        </div>`;
+    }
+  </script>
+
+  <script>
+    (function() {
+      const map = {
+        "whitsundays": "Whitsundays",
+        "hamilton-island": "Hamilton Island",
+        "magnetic-island": "Magnetic Island",
+        "port-douglas": "Port Douglas",
+        "mission-beach": "Mission Beach",
+        "proserpine": "Proserpine"
+      };
+      try {
+        const id = localStorage.getItem("drift_destination_v1") || "whitsundays";
+        const el = document.getElementById("destLabel");
+        if (el) el.textContent = map[id] || "Whitsundays";
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

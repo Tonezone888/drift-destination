@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Suggest a place · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff; max-width: 430px; margin: 0 auto; min-height: 100vh;
+      background: #0a1628; -webkit-font-smoothing: antialiased;
+    }
+    .page { padding: 16px 16px 40px; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .back {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: white; text-decoration: none;
+    }
+    h1 { font-size: 1.2rem; font-weight: 700; }
+    label { display: block; font-size: 0.78rem; opacity: 0.75; margin: 14px 0 6px; }
+    input, textarea, select {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(8,28,44,0.85); color: #fff; font-size: 0.95rem;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    .btn {
+      display: block; width: 100%; margin-top: 20px; padding: 14px;
+      border: none; border-radius: 12px; background: #2dd4bf; color: #042f2e;
+      font-weight: 800; font-size: 0.95rem; cursor: pointer;
+    }
+    .msg { margin-top: 14px; font-size: 0.9rem; line-height: 1.4; }
+    .msg.err { color: #fca5a5; }
+    .msg.ok { color: #5eead4; }
+    .hint { font-size: 0.8rem; opacity: 0.65; margin-top: 8px; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="see-and-do.html">←</a>
+      <h1 id="heading">Suggest a place</h1>
+    </div>
+    <p class="hint" id="loginHint" style="display:none">You need to be logged in to suggest a place. <a href="login.html" style="color:#5eead4">Log in</a> or <a href="signup.html" style="color:#5eead4">sign up</a>.</p>
+    <form id="form" style="display:none">
+      <label>Place name *</label>
+      <input id="name" required placeholder="e.g. Honeyeater Lookout"/>
+      <label>Type</label>
+      <select id="ptype">
+        <option value="lookout">Lookout</option>
+        <option value="trail">Walking trail</option>
+        <option value="beach">Beach</option>
+        <option value="photo-spot">Photo spot</option>
+        <option value="swimming-hole">Swimming hole</option>
+      </select>
+      <label>Short description *</label>
+      <textarea id="desc" required placeholder="What makes this place special?"></textarea>
+      <label>Location / map pin *</label>
+      <input id="location" required placeholder="Address, or lat,lng, or ‘near Whitehaven’"/>
+      <label>Photo URL *</label>
+      <input id="photo" required placeholder="https://… (paste image link for now)"/>
+      <label>Tips (optional)</label>
+      <textarea id="tips" placeholder="Best time of day, access notes, parking…"></textarea>
+      <button class="btn" type="submit">Submit suggestion</button>
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+  <script>
+    var LABELS = {
+      lookout: "Suggest a lookout",
+      trail: "Suggest a trail",
+      beach: "Suggest a beach",
+      "photo-spot": "Suggest a photo spot",
+      "swimming-hole": "Suggest a swimming hole"
+    };
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function user() {
+      try {
+        var u = localStorage.getItem("drift_user");
+        return u ? JSON.parse(u) : null;
+      } catch (e) { return null; }
+    }
+    var type = new URLSearchParams(location.search).get("type") || "lookout";
+    document.getElementById("heading").textContent = LABELS[type] || "Suggest a place";
+    var sel = document.getElementById("ptype");
+    if ([].slice.call(sel.options).some(function (o) { return o.value === type; })) sel.value = type;
+
+    var u = user();
+    if (!u || !(u.email || u.name)) {
+      document.getElementById("loginHint").style.display = "block";
+    } else {
+      document.getElementById("form").style.display = "block";
+    }
+
+    document.getElementById("form").onsubmit = function (ev) {
+      ev.preventDefault();
+      var msg = document.getElementById("msg");
+      var payload = {
+        id: "p" + Date.now().toString(36),
+        name: document.getElementById("name").value.trim(),
+        place_type: document.getElementById("ptype").value,
+        description: document.getElementById("desc").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        photo: document.getElementById("photo").value.trim(),
+        tips: document.getElementById("tips").value.trim(),
+        submitted_by: (u && (u.email || u.name)) || "unknown",
+        submitted_at: new Date().toISOString(),
+        status: "pending",
+        destination: destId()
+      };
+      if (!payload.name || !payload.description || !payload.location || !payload.photo) {
+        msg.className = "msg err";
+        msg.textContent = "Please fill required fields.";
+        return;
+      }
+      // Store locally for Operator to pick up via shared pending file pattern:
+      // also POST-less: append to local queue key; Operator reads pending_places via publish later
+      try {
+        var key = "drift_pending_places_" + destId();
+        var q = JSON.parse(localStorage.getItem(key) || "[]");
+        q.unshift(payload);
+        localStorage.setItem(key, JSON.stringify(q));
+      } catch (e) {}
+      // Write via beacon to a collect endpoint if present; else show success + instruction
+      fetch("data/" + destId() + "/pending_places.json", { method: "GET", cache: "no-store" })
+        .catch(function () {});
+      // Save suggestion as downloadable JSON line for founder import
+      try {
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        // keep in session for Operator paste
+        sessionStorage.setItem("drift_last_place_suggestion", JSON.stringify(payload));
+      } catch (e) {}
+      msg.className = "msg ok";
+      msg.textContent = "Thanks — your suggestion is in the queue. We’ll review it before it goes live.";
+      document.getElementById("form").reset();
+      if ([].slice.call(sel.options).some(function (o) { return o.value === type; })) sel.value = type;
+    };
+  </script>
+</body>
+</html>

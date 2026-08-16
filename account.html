@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>My account · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #0a1628;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.7) 0%, rgba(8,20,40,0.92) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2;
+      padding: 18px 16px 40px;
+      min-height: 100vh;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 22px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0;
+      color: #67e8f9; font-weight: 600; text-decoration: none; font-size: 0.95rem;
+    }
+    .title { font-size: 1.15rem; font-weight: 700; }
+
+    .welcome {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #1d4ed8, #06b6d4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .welcome h1 {
+      font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .welcome p { font-size: 0.85rem; opacity: 0.6; }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; opacity: 0.45;
+      margin-bottom: 8px; padding-left: 4px;
+    }
+    .section { margin-bottom: 20px; }
+
+    .group {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none; color: inherit;
+    }
+    .row:last-child { border-bottom: none; }
+    .row-label { flex: 1; font-size: 0.95rem; font-weight: 550; }
+    .row-value { font-size: 0.82rem; opacity: 0.55; }
+    .row-chevron { opacity: 0.35; }
+
+    /* Subscription cards */
+    .plans {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .plan {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 18px 16px;
+      position: relative;
+    }
+    .plan.featured {
+      border-color: rgba(103, 232, 249, 0.5);
+      background: rgba(103, 232, 249, 0.1);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -8px; right: 14px;
+      background: #67e8f9;
+      color: #0a1628;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+    }
+    .plan-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+    .plan-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .plan-price span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0.7;
+    }
+    .plan-desc {
+      font-size: 0.82rem;
+      opacity: 0.65;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .plan-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #1d4ed8;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .plan.featured .plan-btn {
+      background: #67e8f9;
+      color: #0a1628;
+    }
+
+    .logout {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      color: #f87171;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      background: none;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      padding: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="settings.html">← Back</a>
+      <div class="title">My account</div>
+    </div>
+
+    <div class="welcome">
+      <div class="avatar" id="avatar">T</div>
+      <h1 id="welcomeText">Welcome, Tony</h1>
+      <p id="emailText">tony@drift.com</p>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Preferences</div>
+      <div class="group">
+        <a class="row" href="destination-picker.html">
+          <div class="row-label">Home destination</div>
+          <div class="row-value" id="destValue">Whitsundays</div>
+          <div class="row-chevron">›</div>
+        </a>
+        <a class="row" href="favourites.html">
+          <div class="row-label">Favourites</div>
+          <div class="row-chevron">›</div>
+        </a>
+        <a class="row" href="#">
+          <div class="row-label">Notifications</div>
+          <div class="row-value">Off</div>
+          <div class="row-chevron">›</div>
+        </a>
+        <a class="row" href="#">
+          <div class="row-label">Email preferences</div>
+          <div class="row-chevron">›</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Subscribe</div>
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-name">Monthly</div>
+          <div class="plan-price">$14.99 <span>/ month</span></div>
+          <div class="plan-desc">Full access · specials, events, happy hour alerts for your destination.</div>
+          <button class="plan-btn" data-plan="monthly">Choose monthly</button>
+        </div>
+        <div class="plan featured">
+          <div class="plan-badge">BEST VALUE</div>
+          <div class="plan-name">2 months</div>
+          <div class="plan-price">$30 <span>/ 2 months</span></div>
+          <div class="plan-desc">Save a bit · same full access, billed every two months.</div>
+          <button class="plan-btn" data-plan="2month">Choose $30 plan</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="logout" id="btnLogout">Log out</button>
+  </div>
+
+  <script>
+    const DEST_NAMES = {
+      whitsundays: "Whitsundays",
+      "hamilton-island": "Hamilton Island",
+      "magnetic-island": "Magnetic Island",
+      "port-douglas": "Port Douglas",
+      proserpine: "Proserpine"
+    };
+
+    function getUser() {
+      try {
+        return JSON.parse(localStorage.getItem("drift_user") || "null");
+      } catch {
+        return null;
+      }
+    }
+
+    const user = getUser();
+    if (!user || !user.loggedIn) {
+      window.location.href = "login.html";
+    } else {
+      const name = user.name || "Tony";
+      document.getElementById("welcomeText").textContent = "Welcome, " + name;
+      document.getElementById("emailText").textContent = user.email || "";
+      document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
+    }
+
+    try {
+      const id = localStorage.getItem("drift_destination_v1") || "whitsundays";
+      document.getElementById("destValue").textContent = DEST_NAMES[id] || "Whitsundays";
+    } catch {}
+
+    document.querySelectorAll(".plan-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const plan = btn.dataset.plan;
+        alert("Subscription checkout coming soon.\nSelected: " + (plan === "monthly" ? "$14.99 / month" : "$30 / 2 months"));
+      });
+    });
+
+    document.getElementById("btnLogout").addEventListener("click", () => {
+      localStorage.removeItem("drift_user");
+      window.location.href = "settings.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Weather & Tides – Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0a1628;
+      color: #fff;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+    .hero {
+      position: relative;
+      height: 180px;
+      background: linear-gradient(180deg, rgba(10,22,40,0.3) 0%, rgba(10,22,40,0.85) 100%),
+                  url('assets/hero.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+    .back {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #fff;
+      font-size: 20px;
+    }
+    .loc {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 2px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .section {
+      margin: 14px 12px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(8px);
+    }
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+    .wind-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wind-main {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .wind-sub {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    .temp-row {
+      display: flex;
+      gap: 18px;
+      margin-top: 8px;
+    }
+    .temp-box {
+      flex: 1;
+      text-align: center;
+    }
+    .temp-num {
+      font-size: 26px;
+      font-weight: 700;
+    }
+    .temp-label {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .tide-chart {
+      height: 90px;
+      position: relative;
+      margin: 8px 0 4px;
+    }
+    .tide-wave {
+      width: 100%;
+      height: 100%;
+    }
+    .tide-times {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tide-hi, .tide-lo {
+      text-align: center;
+      min-width: 70px;
+    }
+    .tide-hi strong, .tide-lo strong {
+      display: block;
+      font-size: 15px;
+    }
+    .sun-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .sun-item {
+      text-align: center;
+      flex: 1;
+    }
+    .sun-item span {
+      display: block;
+      font-size: 12px;
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+    .forecast {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .day {
+      min-width: 62px;
+      text-align: center;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 8px 4px;
+    }
+    .day-name { font-size: 12px; opacity: 0.75; }
+    .day-icon { font-size: 20px; margin: 4px 0; }
+    .day-temp { font-size: 14px; font-weight: 600; }
+    .status {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.6;
+      margin-top: 10px;
+    }
+    .error {
+      color: #ff8a80;
+      font-size: 13px;
+      text-align: center;
+      padding: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <a class="back" href="index.html">←</a>
+    <div class="loc" id="locLabel">—</div>
+    <div class="title">Weather & Tides</div>
+  </div>
+
+  <div class="section" style="background: linear-gradient(135deg, #1a6bb5 0%, #0d4a8a 100%);">
+    <div class="section-title" style="opacity:0.9">Current Wind</div>
+    <div class="wind-row">
+      <div>
+        <div class="wind-main" id="windSpeed">–</div>
+        <div class="wind-sub" id="windDir">Loading…</div>
+      </div>
+      <div style="text-align:right">
+        <div class="wind-sub">Gusts</div>
+        <div style="font-size:20px;font-weight:600" id="windGust">–</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Temperature</div>
+    <div class="temp-row">
+      <div class="temp-box">
+        <div class="temp-num" id="tempNow">–°</div>
+        <div class="temp-label">Now</div>
+      </div>
+      <div class="temp-box">
+        <div class="temp-num" id="tempMax">–°</div>
+        <div class="temp-label">High</div>
+      </div>
+      <div class="temp-box">
+        <div class="temp-num" id="tempMin">–°</div>
+        <div class="temp-label">Low</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Today's Tides</div>
+    <div class="tide-chart">
+      <svg class="tide-wave" viewBox="0 0 300 90" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#0288d1" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+        <path id="tidePath" fill="url(#waveGrad)" d="M0,60 Q75,20 150,55 T300,45 L300,90 L0,90 Z"/>
+        <path id="tideLine" fill="none" stroke="#81d4fa" stroke-width="2.5" d="M0,60 Q75,20 150,55 T300,45"/>
+      </svg>
+    </div>
+    <div class="tide-times" id="tideTimes">
+      <div class="tide-hi">Loading tides…</div>
+    </div>
+    <div class="status" id="tideStatus"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Sun</div>
+    <div class="sun-row">
+      <div class="sun-item"><span>First light</span><strong id="firstLight">–</strong></div>
+      <div class="sun-item"><span>Sunrise</span><strong id="sunrise">–</strong></div>
+      <div class="sun-item"><span>Sunset</span><strong id="sunset">–</strong></div>
+      <div class="sun-item"><span>Last light</span><strong id="lastLight">–</strong></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Next 5 Days</div>
+    <div class="forecast" id="forecast"></div>
+  </div>
+
+  <script>
+    // ====== WORLDTIDES KEY ======
+    const WORLDTIDES_KEY = "5a65b49e-af2d-4302-a5fd-a8c84b4ebaa4";
+
+    // ====== DESTINATION CONFIG ======
+    // Whitsundays / Airlie / Hamilton Island share the same station
+    // Magnetic Island and Bowen have their own
+    const DESTINATIONS = {
+      whitsundays: {
+        name: "Whitsundays",
+        lat: -20.348,
+        lon: 148.956,
+        stationNote: "Hamilton Island area"
+      },
+      airlie: {
+        name: "Airlie Beach",
+        lat: -20.348,
+        lon: 148.956,
+        stationNote: "Hamilton Island area"
+      },
+      hamilton: {
+        name: "Hamilton Island",
+        lat: -20.348,
+        lon: 148.956,
+        stationNote: "Hamilton Island"
+      },
+      magnetic: {
+        name: "Magnetic Island",
+        lat: -19.130,
+        lon: 146.850,
+        stationNote: "Magnetic Island"
+      },
+      bowen: {
+        name: "Bowen",
+        lat: -20.014,
+        lon: 148.248,
+        stationNote: "Bowen"
+      },
+      proserpine: {
+        name: "Proserpine",
+        lat: -20.401,
+        lon: 148.580,
+        stationNote: "Proserpine / closest"
+      }
+    };
+
+    // Read current destination the same way the rest of Visitor does
+    function getCurrentDestKey() {
+      // Common patterns used in Drift Visitor
+      const fromLS = (localStorage.getItem("drift_destination") ||
+                         localStorage.getItem("destination") ||
+                         localStorage.getItem("currentDestination") || "").toLowerCase();
+      if (fromLS && DESTINATIONS[fromLS]) return fromLS;
+
+      // Fallback: try URL param
+      const params = new URLSearchParams(window.location.search);
+      const fromUrl = (params.get("dest") || params.get("destination") || "").toLowerCase();
+      if (fromUrl && DESTINATIONS[fromUrl]) return fromUrl;
+
+      // Default
+      return "whitsundays";
+    }
+
+    const destKey = getCurrentDestKey();
+    const dest = DESTINATIONS[destKey] || DESTINATIONS.whitsundays;
+
+    // Set labels
+    document.getElementById("locLabel").textContent = dest.name;
+
+    // Placeholder wind / temp / sun (same visual style – live later)
+    document.getElementById("windSpeed").textContent = "14 kn";
+    document.getElementById("windDir").textContent = "NNW";
+    document.getElementById("windGust").textContent = "18 kn";
+    document.getElementById("tempNow").textContent = "26°";
+    document.getElementById("tempMax").textContent = "28°";
+    document.getElementById("tempMin").textContent = "21°";
+    document.getElementById("firstLight").textContent = "05:48";
+    document.getElementById("sunrise").textContent = "06:12";
+    document.getElementById("sunset").textContent = "18:05";
+    document.getElementById("lastLight").textContent = "18:29";
+
+    // 5-day mock
+    const days = ["Mon","Tue","Wed","Thu","Fri"];
+    const icons = ["☀️","⛅","🌤️","🌧️","☀️"];
+    const highs = [28,27,26,25,28];
+    const lows  = [21,20,19,18,21];
+    const fc = document.getElementById("forecast");
+    days.forEach((d,i) => {
+      fc.innerHTML += `<div class="day"><div class="day-name">${d}</div><div class="day-icon">${icons[i]}</div><div class="day-temp">${highs[i]}° / ${lows[i]}°</div></div>`;
+    });
+
+    // ====== LIVE TIDES (per destination) ======
+    async function loadTides() {
+      const status = document.getElementById("tideStatus");
+      const timesEl = document.getElementById("tideTimes");
+      try {
+        const now = new Date();
+        const start = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 1000);
+        const url = `https://www.worldtides.info/api/v3?heights&extremes&lat=${dest.lat}&lon=${dest.lon}&start=${start}&length=86400&key=${WORLDTIDES_KEY}`;
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("API " + res.status);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // Wave path
+        const heights = data.heights || [];
+        if (heights.length > 2) {
+          const vals = heights.map(h => h.height);
+          const min = Math.min(...vals);
+          const max = Math.max(...vals);
+          const range = max - min || 1;
+          let d = "";
+          heights.forEach((h, i) => {
+            const x = (i / (heights.length - 1)) * 300;
+            const y = 75 - ((h.height - min) / range) * 55;
+            d += (i === 0 ? "M" : "L") + x.toFixed(1) + "," + y.toFixed(1);
+          });
+          document.getElementById("tideLine").setAttribute("d", d);
+          document.getElementById("tidePath").setAttribute("d", d + " L300,90 L0,90 Z");
+        }
+
+        // High / Low times
+        const extremes = data.extremes || [];
+        if (extremes.length) {
+          let html = "";
+          extremes.slice(0, 4).forEach(ex => {
+            const t = new Date(ex.dt * 1000);
+            const timeStr = t.toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit", hour12: false });
+            const type = ex.type === "High" ? "High" : "Low";
+            const h = ex.height.toFixed(2) + " m";
+            html += `<div class="${ex.type === "High" ? "tide-hi" : "tide-lo"}"><strong>${type}</strong>${timeStr}<br>${h}</div>`;
+          });
+          timesEl.innerHTML = html;
+        } else {
+          timesEl.innerHTML = "<div>No extremes returned</div>";
+        }
+
+        status.textContent = "Live · WorldTides · " + dest.stationNote;
+      } catch (err) {
+        console.error(err);
+        timesEl.innerHTML = `<div class="error">Tides unavailable right now</div>`;
+        status.textContent = err.message || "Error";
+      }
+    }
+
+    loadTides();
+    setInterval(loadTides, 30 * 60 * 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Shopping · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff; max-width: 430px; margin: 0 auto; min-height: 100vh;
+      background: #0a1628; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat; z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.5) 0%, rgba(8,20,40,0.9) 100%);
+      z-index: 1;
+    }
+    .page { position: relative; z-index: 2; padding: 16px 16px 40px; min-height: 100vh; }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 16px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0; width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem; text-decoration: none;
+    }
+    .title {
+      font-size: 1.3rem; font-weight: 700; letter-spacing: -0.03em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+    .tiles { display: flex; flex-direction: column; gap: 12px; }
+    .tile {
+      position: relative; display: block; height: 112px;
+      border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .tile-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transform: scale(1.02);
+    }
+    .tile-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(4,16,28,0.82) 0%, rgba(4,16,28,0.45) 55%, rgba(4,16,28,0.25) 100%);
+    }
+    .tile-body {
+      position: relative; z-index: 1; height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 16px 18px; max-width: 72%;
+    }
+    .tile-name {
+      font-size: 1.12rem; font-weight: 750; letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .tile-sub { font-size: 0.78rem; opacity: 0.88; margin-top: 3px; line-height: 1.25; }
+    .tile-count {
+      font-size: 0.72rem; font-weight: 600; margin-top: 8px;
+      color: #5eead4; letter-spacing: 0.01em;
+    }
+    .add-listing {
+      display: block; max-width: 240px; margin: 28px auto 8px; padding: 11px 18px;
+      border-radius: 12px; text-decoration: none; text-align: center;
+      background: rgba(8, 47, 73, 0.55); border: 1.5px solid rgba(94, 234, 212, 0.75);
+    }
+    .add-listing span { color: #5eead4; font-weight: 700; font-size: 0.9rem; }
+
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="index.html" aria-label="Back">←</a>
+      <h1 class="title">Shopping</h1>
+    </div>
+    <div class="tiles">
+      <a class="tile" href="shop-list.html?cat=markets">
+        <img class="tile-img" src="assets/hub-markets.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Markets</div>
+          <div class="tile-sub">Local market days</div>
+          <div class="tile-count" data-count="markets">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=fashion">
+        <img class="tile-img" src="assets/hub-fashion.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Fashion &amp; clothing</div>
+          <div class="tile-sub">Clothes &amp; boutiques</div>
+          <div class="tile-count" data-count="fashion">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=outdoor">
+        <img class="tile-img" src="assets/hub-outdoor.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Outdoor &amp; sports</div>
+          <div class="tile-sub">Anaconda-style gear</div>
+          <div class="tile-count" data-count="outdoor">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=hardware">
+        <img class="tile-img" src="assets/hub-hardware.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Hardware &amp; homeware</div>
+          <div class="tile-sub">DIY &amp; home</div>
+          <div class="tile-count" data-count="hardware">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=bottle">
+        <img class="tile-img" src="assets/hub-bottle.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Bottle shops</div>
+          <div class="tile-sub">Bottle-O &amp; cellars</div>
+          <div class="tile-count" data-count="bottle">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=essentials">
+        <img class="tile-img" src="assets/hub-essentials.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Essentials</div>
+          <div class="tile-sub">Supermarkets &amp; basics</div>
+          <div class="tile-count" data-count="essentials">…</div>
+        </div>
+      </a>
+      <a class="tile" href="shop-list.html?cat=retail">
+        <img class="tile-img" src="assets/hub-retail.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Other retail</div>
+          <div class="tile-sub">Everything else</div>
+          <div class="tile-count" data-count="retail">…</div>
+        </div>
+      </a>
+    </div>
+    <a class="add-listing" href="signup.html"><span>Add your business +</span></a>
+  </div>
+  <script>
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+
+    function bucket(r) {
+      var c = String(r.category||"").toLowerCase();
+      if (c.indexOf("shop") < 0 && c.indexOf("retail") < 0) return "";
+      var t = String(r.type||r.Type||r.subcategory||"").toLowerCase();
+      if (t.indexOf("market")>=0) return "markets";
+      if (t.indexOf("fashion")>=0 || t.indexOf("cloth")>=0) return "fashion";
+      if (t.indexOf("outdoor")>=0 || t.indexOf("sport")>=0 || t.indexOf("anaconda")>=0 || t.indexOf("bcf")>=0) return "outdoor";
+      if (t.indexOf("hardware")>=0 || t.indexOf("homeware")>=0 || t.indexOf("bunnings")>=0) return "hardware";
+      if (t.indexOf("bottle")>=0 || t.indexOf("liquor")>=0 || t.indexOf("cellar")>=0) return "bottle";
+      if (t.indexOf("essential")>=0 || t.indexOf("supermarket")>=0 || t.indexOf("grocery")>=0) return "essentials";
+      return "retail";
+    }
+
+    fetch("data/" + destId() + "/businesses.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (data) {
+        var rows = Array.isArray(data) ? data : (data.businesses || []);
+        var counts = {};
+        rows.forEach(function (r) {
+          var b = bucket(r);
+          if (b) counts[b] = (counts[b] || 0) + 1;
+        });
+        document.querySelectorAll("[data-count]").forEach(function (el) {
+          var n = counts[el.getAttribute("data-count")] || 0;
+          el.textContent = n > 0 ? (n + (n === 1 ? " listing" : " listings")) : "";
+        });
+      })
+      .catch(function () {
+        document.querySelectorAll("[data-count]").forEach(function (el) { el.textContent = ""; });
+      });
+  </script>
+</body>
+</html>

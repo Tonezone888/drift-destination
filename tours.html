@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Tours & Activities · Drift Destination</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      color: #fff; max-width: 430px; margin: 0 auto; min-height: 100vh;
+      background: #0a1628; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    .hero-bg {
+      position: fixed; inset: 0;
+      background: url("assets/hero-whitsundays.jpg") center center / cover no-repeat; z-index: 0;
+    }
+    .hero-overlay {
+      position: fixed; inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,40,0.5) 0%, rgba(8,20,40,0.9) 100%);
+      z-index: 1;
+    }
+    .page {
+      position: relative; z-index: 2; padding: 16px 16px 40px; min-height: 100vh;
+    }
+    .top {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; margin-bottom: 16px; min-height: 36px;
+    }
+    .back {
+      position: absolute; left: 0; width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem; text-decoration: none;
+    }
+    .title {
+      font-size: 1.3rem; font-weight: 700; letter-spacing: -0.03em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+    .tiles { display: flex; flex-direction: column; gap: 12px; }
+    .tile {
+      position: relative; display: block; height: 112px;
+      border-radius: 18px; overflow: hidden; text-decoration: none; color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .tile-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; transform: scale(1.02);
+    }
+    .tile-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(4,16,28,0.82) 0%, rgba(4,16,28,0.45) 55%, rgba(4,16,28,0.25) 100%);
+    }
+    .tile-body {
+      position: relative; z-index: 1; height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 16px 18px; max-width: 72%;
+    }
+    .tile-name {
+      font-size: 1.12rem; font-weight: 750; letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .tile-sub {
+      font-size: 0.78rem; opacity: 0.88; margin-top: 3px; line-height: 1.25;
+    }
+    .tile-count {
+      font-size: 0.72rem; font-weight: 600; margin-top: 8px;
+      color: #5eead4; letter-spacing: 0.01em;
+    }
+    .tile-count.muted { opacity: 0.55; color: #fff; }
+    .add-listing {
+      display: block; max-width: 240px; margin: 28px auto 8px; padding: 11px 18px;
+      border-radius: 12px; text-decoration: none; text-align: center;
+      background: rgba(8, 47, 73, 0.55); border: 1.5px solid rgba(94, 234, 212, 0.75);
+    }
+    .add-listing span { color: #5eead4; font-weight: 700; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="page">
+    <div class="top">
+      <a class="back" href="index.html" aria-label="Back">←</a>
+      <h1 class="title">Tours & Activities</h1>
+    </div>
+
+    <div class="tiles">
+      <a class="tile" href="tours-list.html?type=Boat%20Tours">
+        <img class="tile-img" src="assets/default-boat.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Boat Tours</div>
+          <div class="tile-sub">Sail, snorkel, raft &amp; islands</div>
+          <div class="tile-count" data-count="boat">…</div>
+        </div>
+      </a>
+
+      <a class="tile" href="tours-list.html?type=Fishing">
+        <img class="tile-img" src="assets/default-fishing.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Fishing</div>
+          <div class="tile-sub">Charter &amp; reef trips</div>
+          <div class="tile-count" data-count="fishing">…</div>
+        </div>
+      </a>
+
+      <a class="tile" href="tours-list.html?type=Bus%20%26%20Bike%20Tours">
+        <img class="tile-img" src="assets/default-bus.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Bus &amp; Bike Tours</div>
+          <div class="tile-sub">Coach, bike &amp; land day trips</div>
+          <div class="tile-count" data-count="bus">…</div>
+        </div>
+      </a>
+
+      <a class="tile" href="tours-list.html?type=Hire">
+        <img class="tile-img" src="assets/default-hire.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Hire</div>
+          <div class="tile-sub">Jet ski, kayak &amp; gear</div>
+          <div class="tile-count" data-count="hire">…</div>
+        </div>
+      </a>
+
+      
+      <a class="tile" href="tours-list.html?type=Sunset%20Tours">
+        <img class="tile-img" src="assets/default-sunset.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Sunset Tours</div>
+          <div class="tile-sub">Evening sails &amp; cruises</div>
+          <div class="tile-count" data-count="sunset">…</div>
+        </div>
+      </a>
+
+      <a class="tile" href="tours-list.html?type=Scenic%20Flights%20%2F%20Skydive">
+        <img class="tile-img" src="assets/default-scenic.jpg" alt="" loading="eager"/>
+        <div class="tile-shade"></div>
+        <div class="tile-body">
+          <div class="tile-name">Scenic Flights / Skydive</div>
+          <div class="tile-sub">Air tours &amp; jumps</div>
+          <div class="tile-count" data-count="scenic">…</div>
+        </div>
+      </a>
+    </div>
+
+    <a class="add-listing" href="signup.html"><span>Add your business +</span></a>
+  </div>
+
+  <script>
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function bucket(r) {
+      const t = String(r.type || r.Type || r.subcategory || "").toLowerCase();
+      if (t.indexOf("sunset") >= 0 && t.indexOf("scenic") < 0) return "sunset";
+      if (t.indexOf("fish") >= 0) return "fishing";
+      if (t.indexOf("bus") >= 0 || t.indexOf("bike") >= 0 || t.indexOf("coach") >= 0) return "bus";
+      if ((t.indexOf("hire") >= 0 || t.indexOf("jet") >= 0 || t.indexOf("kayak") >= 0)
+          && t.indexOf("seaplane") < 0) return "hire";
+      if (t.indexOf("scenic") >= 0 || t.indexOf("skydive") >= 0 || t.indexOf("flight") >= 0
+          || t.indexOf("helicopter") >= 0 || t.indexOf("seaplane") >= 0 || t.indexOf("plane") >= 0) return "scenic";
+      if (t.indexOf("boat") >= 0 || t.indexOf("sail") >= 0 || t.indexOf("snorkel") >= 0 || t.indexOf("dive") >= 0) return "boat";
+      return "";
+    }
+    function isTour(r) {
+      const c = String(r.category || r.Category || "").toLowerCase();
+      return c.indexOf("tour") >= 0 || c.indexOf("activit") >= 0 || !!bucket(r);
+    }
+    fetch("data/" + destId() + "/businesses.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (data) {
+        var rows = Array.isArray(data) ? data : (data.businesses || []);
+        var counts = { boat: 0, fishing: 0, bus: 0, hire: 0, scenic: 0, sunset: 0 };
+        rows.forEach(function (r) {
+          if (!isTour(r)) return;
+          var b = bucket(r);
+          if (b && counts[b] !== undefined) counts[b]++;
+        });
+        document.querySelectorAll("[data-count]").forEach(function (el) {
+          var key = el.getAttribute("data-count");
+          var n = counts[key] || 0;
+          if (n >= 3) {
+            el.textContent = n + " listings";
+          } else if (n > 0) {
+            el.textContent = n + (n === 1 ? " listing" : " listings");
+            el.classList.add("muted");
+          } else {
+            el.textContent = "";
+          }
+        });
+      })
+      .catch(function () {
+        document.querySelectorAll("[data-count]").forEach(function (el) { el.textContent = ""; });
+      });
+  </script>
+</body>
+</html>

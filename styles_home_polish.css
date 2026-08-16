@@ -1,0 +1,137 @@
+/* Drift Homepage Polish — 16 Aug 2026
+   Drop next to styles.css. Safe to remove if you prefer the old layout. */
+
+/* Tighter grid + slightly smaller tiles so more fit on first screen */
+#viewHome .category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+#viewHome .category-card {
+  min-height: 108px;
+  padding: 12px 12px 14px;
+  border-radius: 16px;
+}
+
+#viewHome .cat-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+#viewHome .cat-sub {
+  font-size: 0.68rem;
+  opacity: 0.82;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+#viewHome .cat-icon {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+  opacity: 0.95;
+}
+
+/* Greeting + destination pill */
+#viewHome .greet {
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+#viewHome .greeting-title {
+  font-size: 1.35rem !important;
+  margin: 0 0 2px !important;
+  font-weight: 700;
+}
+
+#viewHome .greeting-subtitle {
+  font-size: 0.82rem !important;
+  margin: 0 0 10px !important;
+  opacity: 0.8;
+}
+
+.dest-pill {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(8, 28, 44, 0.55);
+  color: #f4fafc;
+  font-size: 0.82rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+.dest-pill:active { transform: scale(0.98); }
+.dest-pin { font-size: 0.9rem; }
+.dest-chevron { opacity: 0.7; font-size: 0.75rem; }
+
+/* Search sits under tiles, slightly tighter */
+#viewHome .search-bar {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/* Bottom nav — lighter, more glass */
+.bottom-nav {
+  background: rgba(6, 22, 36, 0.58) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(24px) saturate(1.25) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.25) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Medical + Community tile photo fallbacks if assets missing */
+.cat-photo-medical {
+  background-image:
+    linear-gradient(160deg, rgba(4,16,24,0.25) 0%, rgba(4,16,24,0.55) 100%),
+    url("assets/hub-medical.jpg"),
+    url("assets/default-medical.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.cat-photo-community {
+  background-image:
+    linear-gradient(160deg, rgba(4,16,24,0.25) 0%, rgba(4,16,24,0.55) 100%),
+    url("assets/hub-community.jpg"),
+    url("assets/default-community.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Slightly more first-screen breathing room on short phones */
+@media (max-height: 720px) {
+  #viewHome .category-card { min-height: 96px; padding: 10px 11px 12px; }
+  #viewHome .greeting-title { font-size: 1.2rem !important; }
+  #viewHome .category-grid { gap: 8px; }
+}
+
+/* Restore working destination chip (links to destination-picker.html) */
+.dest-chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(8, 28, 44, 0.55);
+  color: #f4fafc;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+.dest-chip:active { transform: scale(0.98); }

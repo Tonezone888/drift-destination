@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a1628"/>
+  <title>Event · Drift Destination</title>
+  <script src="photo-defaults.js"></script>
+  <script src="favs.js"></script>
+  <style>
+    html, body {
+      margin: 0; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif;
+      height: auto !important; min-height: 100%;
+      overflow-x: hidden !important; overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      background: #0a1628;
+    }
+    .hero-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(160deg,#041018,#0c4a6e), url("assets/hero-whitsundays.jpg") center/cover;
+    }
+    .wrap { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 12px 14px 100px; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .back { color: #5eead4; text-decoration: none; font-size: 1.3rem; }
+    .title { margin: 0; font-size: 1.15rem; font-weight: 800; flex: 1; line-height: 1.25; }
+    .hero-photo {
+      width: 100%; height: 180px; object-fit: cover; border-radius: 16px;
+      margin-bottom: 14px; background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .meta {
+      background: rgba(8,28,44,0.72); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+    }
+    .meta-row { font-size: 0.9rem; margin: 6px 0; opacity: 0.92; }
+    .meta-row strong { color: #5eead4; font-weight: 600; margin-right: 8px; }
+    .offer-line { color: #fde68a; font-weight: 600; font-size: 0.9rem; margin-top: 4px; }
+    .detail {
+      font-size: 0.92rem; line-height: 1.5; opacity: 0.88; margin: 4px 0 18px;
+      white-space: pre-wrap;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .btn {
+      font-size: 0.78rem; font-weight: 700; padding: 10px 14px; border-radius: 999px;
+      text-decoration: none; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.1); cursor: pointer;
+    }
+    .btn-call { background: rgba(45,212,191,0.22); border-color: rgba(94,234,212,0.4); color: #5eead4; }
+    .btn-primary { background: rgba(94,234,212,0.9); color: #042028; border-color: transparent; }
+    .btn-ghost.on { color: #fb7185; border-color: rgba(251,113,133,0.5); }
+    .venue-card {
+      display: flex; gap: 12px; align-items: center;
+      background: rgba(8,28,44,0.62); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 12px; margin-top: 8px; text-decoration: none; color: inherit;
+    }
+    .venue-card img {
+      width: 64px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0;
+    }
+    .venue-name { font-weight: 700; font-size: 0.95rem; }
+    .venue-meta { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="whats-on.html">←</a>
+      <h1 class="title" id="title">Event</h1>
+    </div>
+    <img class="hero-photo" id="photo" alt="" src="assets/default-events.png"/>
+    <div class="meta" id="meta"></div>
+    <div class="detail" id="detail"></div>
+    <div class="actions" id="actions"></div>
+    <div id="venue"></div>
+  </div>
+  <script>
+    function esc(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function isReal(v) {
+      var s = String(v || "").trim();
+      return s && s.toLowerCase() !== "n/a" && s !== "-" && s !== "none";
+    }
+    function norm(s) {
+      return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    }
+    function formatDate(iso) {
+      if (!iso) return "";
+      var d = new Date(iso + "T12:00:00");
+      if (isNaN(d.getTime())) return iso;
+      var day = d.getDate();
+      var month = d.toLocaleString("en-AU", { month: "long" });
+      var year = d.getFullYear();
+      var nowY = new Date().getFullYear();
+      return day + " " + month + (year !== nowY ? " " + year : "");
+    }
+    function extractVenueName(title, where) {
+      // "Bingo at Boaty's" / "Trivia Tuesday at Club Whitsunday"
+      var t = title || "";
+      var m = t.match(/\bat\s+(.+)$/i);
+      if (m) return m[1].replace(/\s*[—–-].*$/, "").trim();
+      // first part of where before comma
+      if (where) {
+        var w = where.split(",")[0].trim();
+        if (w.length > 3 && w.length < 50) return w;
+      }
+      return "";
+    }
+    function findBiz(list, name) {
+      var n = norm(name);
+      if (!n) return null;
+      var hit = list.find(function (b) {
+        return norm(b.name || b["Business Name"] || b.business) === n;
+      });
+      if (hit) return hit;
+      return list.find(function (b) {
+        var bn = norm(b.name || b["Business Name"] || b.business);
+        return bn && (bn.includes(n) || n.includes(bn));
+      }) || null;
+    }
+    function defaultPhoto(title, category) {
+      var blob = ((title || "") + " " + (category || "")).toLowerCase();
+      if (/market/.test(blob)) return "assets/default-shopping.jpg";
+      if (/sail|race week|boat/.test(blob)) return "assets/default-boat.jpg";
+      if (/bingo|trivia|karaoke|toad/.test(blob)) return "assets/default-bar.jpg";
+      if (/music|acoustic|dj/.test(blob)) return "assets/default-events.png";
+      return "assets/default-events.png";
+    }
+
+    var p = new URLSearchParams(location.search);
+    var title = p.get("title") || "Event";
+    var date = p.get("date") || "";
+    var time = p.get("time") || "";
+    var where = p.get("where") || "";
+    var detail = p.get("detail") || "";
+    var category = p.get("category") || "";
+    var photoQ = p.get("photo") || "";
+    var id = p.get("id") || title;
+    document.getElementById("title").textContent = title;
+    document.title = title + " · Drift Destination";
+
+    var photoSrc = photoQ || defaultPhoto(title, category);
+    document.getElementById("photo").src = photoSrc;
+
+    var whenStr = "";
+    if (date) whenStr = formatDate(date) + (time ? " · " + time : "");
+    else if (time) whenStr = time;
+    var metaHtml = "";
+    if (whenStr) metaHtml += '<div class="meta-row"><strong>When</strong>' + esc(whenStr) + "</div>";
+    if (where) metaHtml += '<div class="meta-row"><strong>Where</strong>' + esc(where) + "</div>";
+    if (title) metaHtml += '<div class="offer-line">' + esc(title.replace(/\s+at\s+.+$/i, "").trim() || title) + (time ? " · " + esc(time) : "") + "</div>";
+    document.getElementById("meta").innerHTML = metaHtml || "";
+    document.getElementById("detail").textContent = detail;
+
+    var favKey = "event:" + (id || title);
+    var isFav = false;
+    try {
+      isFav = JSON.parse(localStorage.getItem("drift_favs") || "[]").indexOf(favKey) >= 0;
+    } catch (e) {}
+
+    async function loadBiz() {
+      var id = destId();
+      var urls = ["data/" + id + "/businesses.json?t=" + Date.now(), "data/businesses.json?t=" + Date.now()];
+      for (var i = 0; i < urls.length; i++) {
+        try {
+          var r = await fetch(urls[i]);
+          if (!r.ok) continue;
+          var j = await r.json();
+          if (Array.isArray(j)) return j;
+          if (j && Array.isArray(j.businesses)) return j.businesses;
+        } catch (e) {}
+      }
+      return [];
+    }
+
+    (async function () {
+      var bizList = await loadBiz();
+      var venueName = extractVenueName(title, where);
+      var b = venueName ? findBiz(bizList, venueName) : null;
+      var phone = b && isReal(b.phone || b.Phone) ? String(b.phone || b.Phone).trim() : "";
+      var web = b && isReal(b.website || b.Website) ? String(b.website || b.Website).trim() : "";
+      var webHref = web && !/^https?:\/\//i.test(web) ? "https://" + web : web;
+      var actions = document.getElementById("actions");
+      var html = "";
+      if (phone) {
+        html += '<a class="btn btn-call" href="tel:' + phone.replace(/[\s().-]/g, "") + '">Call</a>';
+      }
+      if (webHref) {
+        html += '<a class="btn" href="' + esc(webHref) + '" target="_blank" rel="noopener">Website</a>';
+      }
+      html += '<button type="button" class="btn btn-ghost' + (isFav ? " on" : "") + '" id="interested">' +
+        (isFav ? "★ Interested" : "☆ Interested") + "</button>";
+      actions.innerHTML = html;
+
+      document.getElementById("interested").onclick = function () {
+        try {
+          var list = JSON.parse(localStorage.getItem("drift_favs") || "[]");
+          var i = list.indexOf(favKey);
+          if (i >= 0) { list.splice(i, 1); isFav = false; }
+          else { list.push(favKey); isFav = true; }
+          localStorage.setItem("drift_favs", JSON.stringify(list));
+          this.className = "btn btn-ghost" + (isFav ? " on" : "");
+          this.textContent = isFav ? "★ Interested" : "☆ Interested";
+        } catch (e) {}
+      };
+
+      if (b) {
+        var name = b.name || b["Business Name"] || venueName;
+        var loc = b.locality || b.Locality || "";
+        var cat = b.category || b.Category || "";
+        var type = b.type || b.Type || "";
+        var bid = b.id || b.DriftID || name;
+        var bphoto = (window.driftPhotoFor
+          ? window.driftPhotoFor(Object.assign({}, b, { name: name, category: cat, type: type }))
+          : photoSrc);
+        var placeUrl = "place.html?id=" + encodeURIComponent(bid) +
+          "&name=" + encodeURIComponent(name) +
+          "&locality=" + encodeURIComponent(loc) +
+          "&phone=" + encodeURIComponent(phone) +
+          "&website=" + encodeURIComponent(web) +
+          "&category=" + encodeURIComponent(cat) +
+          "&type=" + encodeURIComponent(type) +
+          "&photo=" + encodeURIComponent(bphoto) +
+          "&rating=" + encodeURIComponent(b.rating || b["Google Rating"] || "") +
+          "&address=" + encodeURIComponent(b.address || b.Address || "");
+        document.getElementById("venue").innerHTML =
+          '<a class="venue-card" href="' + placeUrl + '">' +
+            '<img src="' + esc(bphoto) + '" alt=""/>' +
+            '<div><div class="venue-name">' + esc(name) + '</div>' +
+            '<div class="venue-meta">' + (loc ? esc(loc) + " · " : "") + "View venue ›</div></div>" +
+          "</a>";
+      }
+    })();
+  </script>
+</body>
+</html>

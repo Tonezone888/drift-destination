@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Live music · Drift Destination</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="photo-defaults.js"></script>
+  <script src="favs.js"></script>
+  <script src="list-sort.js"></script>
+  <style>
+    html, body {
+      margin: 0; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif;
+      height: auto !important; min-height: 100%;
+      overflow-x: hidden !important; overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .hero-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(160deg,#041018,#0c4a6e), url("assets/hero-whitsundays.jpg") center/cover;
+    }
+    .wrap { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 12px 14px 100px; }
+    .top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .back { color: #5eead4; text-decoration: none; font-size: 1.3rem; }
+    .title { margin: 0; font-size: 1.2rem; font-weight: 800; flex: 1; }
+    .card {
+      position: relative; display: flex; gap: 12px; align-items: stretch;
+      padding: 10px; margin: 0 0 10px; border-radius: 14px; color: inherit;
+      background: rgba(8,28,44,0.62); border: 1px solid rgba(255,255,255,0.12);
+    }
+    .card-hit { position: absolute; inset: 0; z-index: 1; border-radius: 14px; }
+    .card-body { flex: 1; min-width: 0; position: relative; z-index: 0; display: flex; flex-direction: column; justify-content: center; }
+    .card-photo {
+      width: 88px; min-height: 88px; flex-shrink: 0; border-radius: 10px; object-fit: cover;
+      background: rgba(0,0,0,0.25);
+    }
+    .card-name { font-weight: 700; font-size: 0.95rem; line-height: 1.25; }
+    .card-meta { font-size: 0.75rem; opacity: 0.8; margin-top: 3px; }
+    .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; position: relative; z-index: 2; }
+    .btn {
+      display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+      text-decoration: none; border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0; background: rgba(255,255,255,0.08);
+    }
+    .btn-call { background: #2dd4bf; color: #042f2e; border-color: transparent; font-weight: 700; }
+    .empty { opacity: 0.75; text-align: center; padding: 40px 12px; }
+    .add-listing {
+      display: block; max-width: 260px; margin: 24px auto 8px; padding: 11px 18px;
+      border-radius: 12px; text-decoration: none; text-align: center;
+      background: rgba(8, 47, 73, 0.55); border: 1.5px solid rgba(94, 234, 212, 0.75);
+    }
+    .add-listing span { color: #5eead4; font-weight: 700; font-size: 0.88rem; }
+    .card-rating { font-size: 0.75rem; margin-top: 3px; color: #fbbf24; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="whats-on.html">←</a>
+      <h1 class="title">Live music</h1>
+    </div>
+    <div id="list"><p class="empty">Loading…</p></div>
+    <a class="add-listing" href="signup.html?intent=live-music"><span>Add your act +</span></a>
+  </div>
+  <script>
+    function destId() {
+      try {
+        return (localStorage.getItem("drift_destination_v1") || "whitsundays")
+          .trim().toLowerCase().replace(/-/g, "_") || "whitsundays";
+      } catch (e) { return "whitsundays"; }
+    }
+    function esc(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+    }
+    function isReal(v) {
+      var s = String(v || "").trim();
+      return s && s.toLowerCase() !== "n/a" && s !== "-" && s !== "none";
+    }
+    function rowMatch(r) {
+      var t = String(r.Type || r.type || "").toLowerCase();
+      var c = String(r.category || r.Category || "").toLowerCase();
+      if (t.indexOf("live music") >= 0 || t.indexOf("musician") >= 0) return true;
+      if (c.indexOf("community") >= 0 && (t.indexOf("music") >= 0 || t.indexOf("band") >= 0 || t.indexOf("dj") >= 0)) return true;
+      return false;
+    }
+    fetch("data/" + destId() + "/catalogue.json")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var rows = (data.rows || data || []).filter(rowMatch);
+        if (window.driftSortRows) rows = driftSortRows(rows);
+        var root = document.getElementById("list");
+        if (!rows.length) {
+          root.innerHTML = '<p class="empty">No acts listed yet.<br/>Add your act so locals know where to find you.</p>';
+          return;
+        }
+        root.innerHTML = rows.map(function (r) {
+          var name = r["Business Name"] || r.name || "Act";
+          var loc = r.Locality || r.locality || "";
+          var phone = r.Phone || r.phone || "";
+          var web = r.Website || r.website || "";
+          var photo = r.photo_url || r.Photo || r["Photo Name"] || "";
+          var rating = r["Google Rating"] || r.rating || "";
+          var reviews = r["Google Review Count"] || r.reviews || "";
+          var id = r.id || r.ID || name;
+          var place = "place.html?id=" + encodeURIComponent(id);
+          var img = photo
+            ? '<img class="card-photo" src="' + esc(photo) + '" alt="" loading="lazy" onerror="this.style.opacity=0.3"/>'
+            : '<div class="card-photo"></div>';
+          var rate = rating ? '<div class="card-rating">★ ' + esc(String(rating)) + (reviews ? " · " + esc(String(reviews)) : "") + "</div>" : "";
+          var actions = "";
+          if (isReal(phone)) actions += '<a class="btn btn-call" href="tel:' + esc(phone.replace(/\s/g,"")) + '">Call</a>';
+          if (isReal(web)) {
+            var href = web.indexOf("http") === 0 ? web : "https://" + web;
+            actions += '<a class="btn" href="' + esc(href) + '" target="_blank" rel="noopener">Website</a>';
+          }
+          return '<div class="card">' +
+            '<a class="card-hit" href="' + place + '" aria-label="' + esc(name) + '"></a>' +
+            '<div class="card-body"><div class="card-name">' + esc(name) + '</div>' +
+            (loc ? '<div class="card-meta">Live music · ' + esc(loc) + '</div>' : '<div class="card-meta">Live music</div>') +
+            rate + '<div class="card-actions">' + actions + '</div></div>' + img + '</div>';
+        }).join("");
+      })
+      .catch(function () {
+        document.getElementById("list").innerHTML = '<p class="empty">Could not load listings.</p>';
+      });
+  </script>
+</body>
+</html>
